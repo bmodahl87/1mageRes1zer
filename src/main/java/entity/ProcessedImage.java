@@ -18,7 +18,7 @@ public class ProcessedImage {
     public ProcessedImage() {};
 
 
-    public Boolean getSucess() { return success; }
+    public Boolean getSuccess() { return success; }
 
     public void setSuccess(Boolean success) { this.success = success; }
 

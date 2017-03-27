@@ -1,5 +1,6 @@
 package resizer;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
@@ -7,6 +8,7 @@ import javax.ws.rs.core.*;
 import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
 
 import entity.ProcessedImage;
 import net.coobird.thumbnailator.*;
@@ -31,9 +33,16 @@ public class ImageResize {
                                     @QueryParam("width") Integer width,
                                     @QueryParam("height") Integer height) throws IOException {
 
-        BufferedImage image = ImageIO.read(url);
 
-        if (image != null) {
+        URLConnection connection = url.openConnection();
+
+        String contentType = connection.getHeaderField("Content-Type");
+
+        boolean isImage = contentType.startsWith("image/");
+
+        if (isImage) {
+
+            BufferedImage image = ImageIO.read(url);
 
             BufferedImage thumbNail = Thumbnails.of(image)
                     .size(width, height)
@@ -52,6 +61,7 @@ public class ImageResize {
             processedImage.setImage(imageData);
 
             return Response.ok(processedImage).build();
+            
         } else {
 
             ProcessedImage processedImage = new ProcessedImage();
