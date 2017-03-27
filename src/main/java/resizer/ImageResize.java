@@ -29,9 +29,7 @@ public class ImageResize {
     @Produces("application/json")
     //TODO need to make url a array
     public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
-                                    @QueryParam("tag1") String tag1,
-                                    @QueryParam("tag2") String tag2,
-                                    @QueryParam("tag3") String tag3,
+                                    //@QueryParam("tag") List<String> tags,
                                     @QueryParam("width") Integer width,
                                     @QueryParam("height") Integer height) throws IOException {
 
@@ -46,15 +44,23 @@ public class ImageResize {
 
             if (allPics == "true"){
                 ConvertToImage(url);
-                //TODO Resize will return a url or a thumbnail?
-                Resize(image, width, height, tag1, tag2, tag3);
+                //TODO Resize will return image
+                Resize(image, width, height, tags);
                 //TODO AddResizedPhotos to resizedArray
-                resizedImages.add(???);
+                resizedImages.add(image);
             }
         }
+        //TODO returns list with either gif or images "finalImages" list
+        CheckIfGif(resizedImages, tags);
+
+        //Returns list of byte arrays
+        imageList = PrepareForResponce(finalImages);
+
+        ProccessedImage.setImage(imageList);
+
+        CreateProcessedImage();
 
 
-        
         BufferedImage image = ImageIO.read(url);
 
         if (image != null) {
