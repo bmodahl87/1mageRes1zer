@@ -7,7 +7,7 @@ import javax.ws.rs.core.*;
 import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
-
+import java.util.*;
 import entity.ProcessedImage;
 import net.coobird.thumbnailator.*;
 
@@ -27,10 +27,34 @@ public class ImageResize {
     @Path("/resizeImageJpeg")
     @GET
     @Produces("application/json")
-    public Response resizeJpegImage(@QueryParam("url") URL url,
+    //TODO need to make url a array
+    public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
+                                    @QueryParam("tag1") String tag1,
+                                    @QueryParam("tag2") String tag2,
+                                    @QueryParam("tag3") String tag3,
                                     @QueryParam("width") Integer width,
                                     @QueryParam("height") Integer height) throws IOException {
 
+        //For misc
+        ValidateInput();
+
+        List<URL> resizedImages = new ArrayList<URL>();
+
+        for(URL url:urls) {
+            //TODO checkifphotos will return a string "allPics" set to true or false and an image
+            CheckIfPhotos(url);
+
+            if (allPics == "true"){
+                ConvertToImage(url);
+                //TODO Resize will return a url or a thumbnail?
+                Resize(image, width, height, tag1, tag2, tag3);
+                //TODO AddResizedPhotos to resizedArray
+                resizedImages.add(???);
+            }
+        }
+
+
+        
         BufferedImage image = ImageIO.read(url);
 
         if (image != null) {
