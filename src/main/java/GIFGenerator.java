@@ -25,9 +25,11 @@ public class GIFGenerator {
     //width/height for later use
     public void generate(int delayInSeconds, ArrayList<Image> images, int width, int height, String absoluteGeneratedFilePath) {
 
+        //Takes in OutputStream
         encoder.start(absoluteGeneratedFilePath + "/generated_gif.gif");
 
-        //Set delay (converted to miliseconds)
+
+        //Set delay (converted to milliseconds)
         encoder.setDelay(1000 * delayInSeconds);
 
         //Set the gif to repeat (0 = infinite, -1 = 1 cycle, >= 1 indicates number of cycles)
