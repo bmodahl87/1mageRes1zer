@@ -13,7 +13,7 @@ public class ProcessedImage {
 
 
     Boolean success;
-    byte[] image;
+    String  message;
 
     public ProcessedImage() {};
 
@@ -22,12 +22,9 @@ public class ProcessedImage {
 
     public void setSuccess(Boolean success) { this.success = success; }
 
+    public String getMessage() { return message; }
 
-    public byte[] getImage() { return image; }
-
-    public void setImage(byte[] image) { this.image = image; }
-
-
+    public void setMessage(String message) { this.message = message; }
 
 
 }

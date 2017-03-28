@@ -1,5 +1,7 @@
 package resizer;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -9,9 +11,17 @@ import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.LinkedHashMap;
 
+import java.util.Map;
+
+import com.sun.jersey.multipart.BodyPart;
+import com.sun.jersey.multipart.MultiPart;
 import entity.ProcessedImage;
 import net.coobird.thumbnailator.*;
+
+import static com.sun.jersey.multipart.MultiPartMediaTypes.MULTIPART_MIXED_TYPE;
+import static java.awt.SystemColor.info;
 
 
 /**
@@ -28,7 +38,6 @@ public class ImageResize {
 
     @Path("/resizeImageJpeg")
     @GET
-    @Produces("application/json")
     public Response resizeJpegImage(@QueryParam("url") URL url,
                                     @QueryParam("width") Integer width,
                                     @QueryParam("height") Integer height) throws IOException {
@@ -40,37 +49,41 @@ public class ImageResize {
 
         boolean isImage = contentType.startsWith("image/");
 
+        ProcessedImage processedImage = new ProcessedImage();
+
         if (isImage) {
 
             BufferedImage image = ImageIO.read(url);
 
-            BufferedImage thumbNail = Thumbnails.of(image)
-                    .size(width, height)
-                    .asBufferedImage();
+            if (image != null) {
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                BufferedImage thumbNail = Thumbnails.of(image)
+                        .size(width, height)
+                        .asBufferedImage();
 
-            ImageIO.write(image, "jpg", baos);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            byte[] imageData = baos.toByteArray();
+                ImageIO.write(thumbNail, "jpg", baos);
 
-            ProcessedImage processedImage = new ProcessedImage();
+                byte[] imageData = baos.toByteArray();
 
-            processedImage.setSuccess(true);
+                return Response.ok(
+                        new ByteArrayInputStream(imageData),
+                        new MediaType("image", "jpg"))
+                        .build();
 
-            processedImage.setImage(imageData);
+            } else {
+                processedImage.setSuccess(false);
+                processedImage.setMessage("Invalid Image!");
+                return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
+            }
 
-            return Response.ok(processedImage).build();
             
         } else {
 
-            ProcessedImage processedImage = new ProcessedImage();
-
             processedImage.setSuccess(false);
-
-            processedImage.setImage(null);
-
-            return Response.ok(processedImage).build();
+            processedImage.setMessage("Invalid URL!");
+            return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
 
         }
     }
