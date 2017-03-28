@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="14fe1034-8ffe-4b14-9860-e82ecb7492db" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/test.gif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test.gif" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/GifGenerator.java" afterPath="$PROJECT_DIR$/src/main/java/GIFGenerator.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/test/java/GifGeneratorTest.java" afterPath="$PROJECT_DIR$/src/test/java/GIFGeneratorTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/GifGenerator.java" afterPath="$PROJECT_DIR$/src/main/java/GifGenerator.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -62,11 +62,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GifGenerator.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/GifGenerator.java">
+      <file leaf-file-name="GIFGenerator.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/GIFGenerator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="42" column="23" lean-forward="false" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="23" />
+            <state relative-caret-position="40">
+              <caret line="32" column="93" lean-forward="false" selection-start-line="32" selection-start-column="93" selection-end-line="32" selection-end-column="93" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -74,11 +74,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GifGeneratorTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/GifGeneratorTest.java">
+      <file leaf-file-name="placeholder.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/placeholder.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GIFGeneratorTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/GIFGeneratorTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="140">
-              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -122,6 +132,7 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/test/java/GifGeneratorTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/GifGenerator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/GIFGenerator.java" />
       </list>
     </option>
   </component>
@@ -291,14 +302,14 @@
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.GifGeneratorTest.tryGifEncoder">
-    <configuration default="false" name="GifGeneratorTest.tryGifEncoder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.GIFGeneratorTest.tryGifEncoder">
+    <configuration default="false" name="GIFGeneratorTest.tryGifEncoder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="1mageRes1zer" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="GifGeneratorTest" />
+      <option name="MAIN_CLASS_NAME" value="GIFGeneratorTest" />
       <option name="METHOD_NAME" value="tryGifEncoder" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -864,11 +875,11 @@
     <list size="3">
       <item index="0" class="java.lang.String" itemvalue="TomEE Server.Unnamed" />
       <item index="1" class="java.lang.String" itemvalue="Tomcat Server.1mageRes1zer" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.GifGeneratorTest.tryGifEncoder" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.GIFGeneratorTest.tryGifEncoder" />
     </list>
     <recent_temporary>
       <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.GifGeneratorTest.tryGifEncoder" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.GIFGeneratorTest.tryGifEncoder" />
       </list>
     </recent_temporary>
   </component>
@@ -907,16 +918,16 @@
       <workItem from="1490219918592" duration="235000" />
       <workItem from="1490291332141" duration="2008000" />
       <workItem from="1490632352430" duration="266000" />
-      <workItem from="1490653838968" duration="6301000" />
+      <workItem from="1490653838968" duration="6615000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="GifGeneratorTest_tryGifEncoder - 2017.03.27 at 18h 38m 21s.xml">
-      <configuration name="GifGeneratorTest.tryGifEncoder" configurationId="JUnit" />
+    <history-entry file="GIFGeneratorTest_tryGifEncoder - 2017.03.27 at 19h 19m 01s.xml">
+      <configuration name="GIFGeneratorTest.tryGifEncoder" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="GifGeneratorTest_tryGifEncoder - 2017.03.27 at 18h 39m 36s.xml">
-      <configuration name="GifGeneratorTest.tryGifEncoder" configurationId="JUnit" />
+    <history-entry file="GIFGeneratorTest_tryGifEncoder - 2017.03.27 at 19h 19m 18s.xml">
+      <configuration name="GIFGeneratorTest.tryGifEncoder" configurationId="JUnit" />
     </history-entry>
     <history-entry file="GifGeneratorTest_tryGifEncoder - 2017.03.27 at 18h 43m 46s.xml">
       <configuration name="GifGeneratorTest.tryGifEncoder" configurationId="JUnit" />
@@ -944,7 +955,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27646000" />
+    <option name="totallyTimeSpent" value="27960000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="18" width="1366" height="717" extended-state="6" />
@@ -1243,21 +1254,29 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/GifGeneratorTest.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/GIFGeneratorTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/GifGenerator.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/GIFGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="42" column="23" lean-forward="false" selection-start-line="42" selection-start-column="23" selection-end-line="42" selection-end-column="23" />
+        <state relative-caret-position="40">
+          <caret line="32" column="93" lean-forward="false" selection-start-line="32" selection-start-column="93" selection-end-line="32" selection-end-column="93" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/placeholder.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

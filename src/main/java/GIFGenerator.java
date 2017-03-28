@@ -11,11 +11,11 @@ import java.util.ArrayList;
 /**
  * Created by katana on 3/27/17.
  */
-public class GifGenerator {
+public class GIFGenerator {
 
     private AnimatedGifEncoder encoder;
 
-    public GifGenerator() {
+    public GIFGenerator() {
 
         encoder = new AnimatedGifEncoder();
 
@@ -53,7 +53,7 @@ public class GifGenerator {
         BufferedImage buff2 = (BufferedImage) image2;
 
         encoder.start("src/main/resources/test.gif");
-        encoder.setDelay(5000);
+        encoder.setDelay(1000);
         encoder.setRepeat(0);
         encoder.addFrame(buff1);
         encoder.addFrame(buff2);
