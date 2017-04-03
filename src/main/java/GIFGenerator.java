@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -23,10 +24,10 @@ public class GIFGenerator {
 
     //Temporarily void until I know how to return something other than a generated File...
     //width/height for later use
-    public void generate(int delayInSeconds, ArrayList<Image> images, int width, int height, String absoluteGeneratedFilePath) {
+    public void generate(int delayInSeconds, ArrayList<Image> images, int width, int height, String absoluteGeneratedFilePath, OutputStream outputStream) {
 
         //Takes in OutputStream
-        encoder.start(absoluteGeneratedFilePath + "/generated_gif.gif");
+        encoder.start(outputStream);
 
 
         //Set delay (converted to milliseconds)

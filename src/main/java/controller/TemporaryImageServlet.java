@@ -9,8 +9,7 @@ import javax.servlet.annotation.*;
 @WebServlet(
 
         name = "TemporaryImageServlet",
-        urlPatterns = {"/" + generatedPath}
-
+        urlPatterns = {"/temp_images"}
 
 )
 
