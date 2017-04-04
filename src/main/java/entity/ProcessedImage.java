@@ -1,9 +1,9 @@
+
 package entity;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 /**
  * Created by bmodahl on 3/21/17.
@@ -14,21 +14,18 @@ public class ProcessedImage {
 
 
     Boolean success;
-    List<byte[]> images;
+    String  message;
 
     public ProcessedImage() {};
 
 
-    public Boolean getSucess() { return success; }
+    public Boolean getSuccess() { return success; }
 
     public void setSuccess(Boolean success) { this.success = success; }
 
+    public String getMessage() { return message; }
 
-    public byte[] getImage() { return images; }
-
-    public void setImage(byte[] images) { this.images = images; }
-
-
+    public void setMessage(String message) { this.message = message; }
 
 
 }
