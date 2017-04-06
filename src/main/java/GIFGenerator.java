@@ -1,11 +1,11 @@
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -24,11 +24,13 @@ public class GIFGenerator {
 
     //Temporarily void until I know how to return something other than a generated File...
     //width/height for later use
-    public void generate(int delayInSeconds, ArrayList<Image> images, int width, int height, String absoluteGeneratedFilePath, OutputStream outputStream) {
+    public ByteArrayOutputStream generate(int delayInSeconds, ArrayList<BufferedImage> images) {
+
+        //Create a ByteArrayOutputStream to write the image to
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         //Takes in OutputStream
         encoder.start(outputStream);
-
 
         //Set delay (converted to milliseconds)
         encoder.setDelay(1000 * delayInSeconds);
@@ -46,6 +48,7 @@ public class GIFGenerator {
         //Finalizes gif
         encoder.finish();
 
+        return outputStream;
 
     }
 
