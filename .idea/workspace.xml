@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="14fe1034-8ffe-4b14-9860-e82ecb7492db" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/entity/ProcessedImage.java" afterPath="$PROJECT_DIR$/src/main/java/entity/ProcessedImage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/resizer/ImageResize.java" afterPath="$PROJECT_DIR$/src/main/java/resizer/ImageResize.java" />
-    </list>
+    <list default="true" id="14fe1034-8ffe-4b14-9860-e82ecb7492db" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -711,12 +707,12 @@
       <workItem from="1491246980618" duration="36000" />
       <workItem from="1491328384785" duration="5453000" />
       <workItem from="1491335487965" duration="3795000" />
-      <workItem from="1491500157342" duration="3763000" />
+      <workItem from="1491500157342" duration="3928000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34887000" />
+    <option name="totallyTimeSpent" value="35052000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="57" y="24" width="1859" height="944" extended-state="6" />
