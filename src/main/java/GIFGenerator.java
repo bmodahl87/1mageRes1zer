@@ -1,5 +1,6 @@
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import resizer.ImageResize;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,16 +16,19 @@ import java.util.ArrayList;
 public class GIFGenerator {
 
     private AnimatedGifEncoder encoder;
+    private ImageResize resizer;
 
     public GIFGenerator() {
 
         encoder = new AnimatedGifEncoder();
+        resizer = new ImageResize(); /*TODO: Image resizer must be refactored to be used without sending a response
+                                       so that this class can resize the images before generating the gif! */
 
     }
 
     //Temporarily void until I know how to return something other than a generated File...
     //width/height for later use
-    public ByteArrayOutputStream generate(int delayInSeconds, ArrayList<BufferedImage> images) {
+    public ByteArrayOutputStream generate(int delayInSeconds, int width, int height, ArrayList<BufferedImage> images) {
 
         //Create a ByteArrayOutputStream to write the image to
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -50,21 +54,6 @@ public class GIFGenerator {
 
         return outputStream;
 
-    }
-
-    public void tryGifEncoder() throws IOException {
-        Image image1 = ImageIO.read(new URL("http://proprofs-cdn.s3.amazonaws.com/images/games/user_images/misc/1141652403.png"));
-        Image image2 = ImageIO.read(new URL("https://www.iconexperience.com/_img/v_collection_png/256x256/shadow/flower_red.png"));
-        BufferedImage buff1 = (BufferedImage) image1;
-        BufferedImage buff2 = (BufferedImage) image2;
-
-        encoder.start("src/main/resources/test.gif");
-        encoder.setDelay(1000);
-        encoder.setRepeat(0);
-        encoder.addFrame(buff1);
-        encoder.addFrame(buff2);
-
-        encoder.finish();
     }
 
 }
