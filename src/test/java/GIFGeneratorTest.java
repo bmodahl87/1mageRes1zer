@@ -38,7 +38,7 @@ public class GIFGeneratorTest {
         images.add(pic1Img);
 
         //Generate the gif
-        ByteArrayOutputStream gifStream = generator.generate(2, images);
+        ByteArrayOutputStream gifStream = generator.generate(2, 0, 0, images);
 
         //Output the gif to the file system for viewing (it will be output through the response in our actual implementation)
         OutputStream outputStream = new FileOutputStream("src/test/resources/test.gif");

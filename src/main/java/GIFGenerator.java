@@ -1,13 +1,7 @@
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import resizer.ImageResize;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +20,6 @@ public class GIFGenerator {
 
     }
 
-    //Temporarily void until I know how to return something other than a generated File...
     //width/height for later use
     public ByteArrayOutputStream generate(int delayInSeconds, int width, int height, ArrayList<BufferedImage> images) {
 
@@ -43,9 +36,11 @@ public class GIFGenerator {
         encoder.setRepeat(0);
 
         //Add each image to the gif
-        for (Image frame : images) {
+        for (BufferedImage frame : images) {
 
-            encoder.addFrame((BufferedImage) frame);
+            //frame = imageresizer.resize(frame, width, height); /*RESIZE THIS IMAGE*/
+
+            encoder.addFrame(frame);
 
         }
 
@@ -55,5 +50,7 @@ public class GIFGenerator {
         return outputStream;
 
     }
+
+
 
 }
