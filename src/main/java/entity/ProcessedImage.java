@@ -15,6 +15,7 @@ public class ProcessedImage {
 
     Boolean success;
     String  message;
+    String  subType;
 
     public ProcessedImage() {};
 

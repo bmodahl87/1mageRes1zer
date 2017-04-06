@@ -8,6 +8,7 @@ import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.Buffer;
 import java.util.*;
 
 import entity.ProcessedImage;
@@ -16,7 +17,7 @@ import net.coobird.thumbnailator.*;
 
 
 /**
- * Created by bmodahl on 3/7/17.
+ * Created by bmodahl & also Keith on 3/7/17.
  */
 
 @Path("/resizeImage")
@@ -36,28 +37,15 @@ public class ImageResize {
                                     @QueryParam("width") Integer width,
                                     @QueryParam("height") Integer height) throws IOException {
 
-        List<BufferedImage> resizedImages = new ArrayList<BufferedImage>();
+    }
 
+    @Path("/resizeImageJpeg")
+    @GET
+    @Produces("application/json")
+    //TODO need to make url a array
+    public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
+                                    @QueryParam("width") Integer width) throws IOException {
 
-        if (ValidateInput(urls)) {
-            for (URL url : urls) {
-                BufferedImage image = ImageIO.read(url);
-
-                BufferedImage thumbNail = Thumbnails.of(image)
-                        .size(width, height)
-                        .asBufferedImage();
-
-                resizedImages.add(thumbNail);
-            }
-            //TODO returns either gif or image object
-            BufferedImage finalImage = CheckIfGif(resizedImages);
-            byte[] imageData = CreateProcessedImage(finalImage);
-
-            return Response.ok(new ByteArrayInputStream(imageData), new MediaType("image", "jpg")).build();
-
-        } else {
-            return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
-        }
 
     }
 
@@ -68,23 +56,18 @@ public class ImageResize {
     public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
                                     @QueryParam("height") Integer height) throws IOException {
 
-        List<BufferedImage> resizedImages = new ArrayList<BufferedImage>();
+        return processRequest(urls, height, 0  );
 
+    }
+
+
+    public Response sendResponse(List<URL> urls, int height, int width) throws IOException {
+
+        ArrayList<BufferedImage> resizedImages = new ArrayList<BufferedImage>();
 
         if (ValidateInput(urls)) {
-            for (URL url : urls) {
-                BufferedImage image = ImageIO.read(url);
-
-                //TODO find a better code bit
-                BufferedImage thumbNail = Thumbnails.of(image)
-                        .size(width, height)
-                        .asBufferedImage();
-
-                resizedImages.add(thumbNail);
-            }
-            //TODO returns either gif or image object
-            BufferedImage finalImage = CheckIfGif(resizedImages);
-            byte[] imageData = CreateProcessedImage(finalImage);
+            actualResizingPart(urls, height, width);
+            ByteArrayOutputStream imageData = CreateProcessedImage(resizedImages);
 
             return Response.ok(new ByteArrayInputStream(imageData), new MediaType("image", "jpg")).build();
 
@@ -94,37 +77,7 @@ public class ImageResize {
 
     }
 
-    @Path("/resizeImageJpeg")
-    @GET
-    @Produces("application/json")
-    //TODO need to make url a array
-    public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
-                                    @QueryParam("width") Integer width) throws IOException {
 
-        List<BufferedImage> resizedImages = new ArrayList<BufferedImage>();
-
-
-        if (ValidateInput(urls)) {
-            for (URL url : urls) {
-                BufferedImage image = ImageIO.read(url);
-
-                //TODO add unique resize code for each method
-                //
-                //
-                //
-                resizedImages.add(image);
-            }
-            //TODO returns either gif or image object
-            BufferedImage finalImage = CheckIfGif(resizedImages);
-            byte[] imageData = CreateProcessedImage(finalImage);
-
-            return Response.ok(new ByteArrayInputStream(imageData), new MediaType("image", "jpg")).build();
-
-        } else {
-            return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
-        }
-
-    }
 
     public boolean ValidateInput(List<URL> urls) throws IOException {
         if (CheckURLS(urls)){
@@ -164,15 +117,26 @@ public class ImageResize {
         return true;
     }
 
-    public byte[] CreateProcessedImage(BufferedImage thumbNail) throws IOException {
+    public ByteArrayOutputStream CreateProcessedImage(ArrayList<BufferedImage> resizedImages) throws IOException {
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream imageData;
 
-        ImageIO.write(thumbNail, "jpg", baos);
+        //If gif
+        if (resizedImages.size() > 1) {
 
-        byte[] imageData = baos.toByteArray();
+            GIFGenerator gen = new GIFGenerator();
+
+            imageData = gen.generate(resizedImages); //, double delayInSeconds)
+
+        } else { //If img
+
+            BufferedImage image = resizedImages.get(0);
+            ImageIO.write(image, "jpg", imageData = new ByteArrayOutputStream());
+
+        }
 
         return imageData;
+
     }
 
 
