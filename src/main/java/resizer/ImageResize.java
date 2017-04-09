@@ -1,92 +1,184 @@
 package resizer;
 
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.LinkedHashMap;
+import java.util.*;
+import java.util.List;
 
-import java.util.Map;
-
-import com.sun.jersey.multipart.BodyPart;
-import com.sun.jersey.multipart.MultiPart;
 import entity.ProcessedImage;
 import net.coobird.thumbnailator.*;
-
-import static com.sun.jersey.multipart.MultiPartMediaTypes.MULTIPART_MIXED_TYPE;
-import static java.awt.SystemColor.info;
+import net.coobird.thumbnailator.geometry.Positions;
 
 
 /**
- * Created by bmodahl on 3/7/17.
+ * Created by bmodahl & also Keith on 3/7/17.
  */
 
 @Path("/resizeImage")
 public class ImageResize {
 
-    @Context
-    HttpHeaders header;
-    @Context
-    HttpServletResponse response;
+    ProcessedImage processedImage = new ProcessedImage();
 
     @Path("/resizeImageJpeg")
     @GET
-    public Response resizeJpegImage(@QueryParam("url") URL url,
-                                    @QueryParam("width") Integer width,
-                                    @QueryParam("height") Integer height) throws IOException {
+    public Response resizeImage(@QueryParam("urls") List<URL> urls,
+                                @QueryParam("width") int width,
+                                @QueryParam("height") int height) throws IOException {
 
+        return processRequest(urls, width, height);
 
-        URLConnection connection = url.openConnection();
-
-        String contentType = connection.getHeaderField("Content-Type");
-
-        boolean isImage = contentType.startsWith("image/");
-
-        ProcessedImage processedImage = new ProcessedImage();
-
-        if (isImage) {
-
-            BufferedImage image = ImageIO.read(url);
-
-            if (image != null) {
-
-                BufferedImage thumbNail = Thumbnails.of(image)
-                        .size(width, height)
-                        .asBufferedImage();
-
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-                ImageIO.write(thumbNail, "jpg", baos);
-
-                byte[] imageData = baos.toByteArray();
-
-                return Response.ok(
-                        new ByteArrayInputStream(imageData),
-                        new MediaType("image", "jpg"))
-                        .build();
-
-            } else {
-                processedImage.setSuccess(false);
-                processedImage.setMessage("Invalid Image!");
-                return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
-            }
-
-            
-        } else {
-
-            processedImage.setSuccess(false);
-            processedImage.setMessage("Invalid URL!");
-            return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
-
-        }
     }
 
+    @Path("/resizeImageJpeg")
+    @GET
+    public Response resizeImageWidthOnly(@QueryParam("urls") List<URL> urls,
+                                         @QueryParam("width") int width) throws IOException {
+        return processRequest(urls, 0, width);
+
+    }
+
+    @Path("/resizeImageJpeg")
+    @GET
+    public Response resizeImageHeightOnly(@QueryParam("urls") List<URL> urls,
+                                          @QueryParam("height") int height) throws IOException {
+
+        return processRequest(urls, height, 0);
+
+    }
+
+
+    public Response processRequest(List<URL> urls, int height, int width) throws IOException {
+
+        List<BufferedImage> resizedImages;
+
+        if (validateInput(urls)) {
+            resizedImages = resizeImages(urls, height, width);
+            byte[] imageData = createProcessedImage(resizedImages).toByteArray();
+
+            return Response.ok(new ByteArrayInputStream(imageData), new MediaType("image", "jpg")).build();
+
+        } else {
+
+            return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
+        }
+
+    }
+
+
+
+    public boolean validateInput(List<URL> urls) throws IOException {
+        if (checkURLS(urls)){
+            if(checkImage(urls)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkURLS(List<URL> urls) throws IOException {
+        for(URL url:urls) {
+            URLConnection connection = url.openConnection();
+
+            String contentType = connection.getHeaderField("Content-Type");
+
+            boolean isImage = contentType.startsWith("image/");
+            if(isImage == false){
+
+                processedImage.setSuccess(false);
+                processedImage.setMessage("Invalid URL!");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkImage(List<URL> urls) throws IOException {
+        for(URL url:urls) {
+            BufferedImage image = ImageIO.read(url);
+            if(image == null){
+                processedImage.setSuccess(false);
+                processedImage.setMessage("Invalid Image!");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public ByteArrayOutputStream createProcessedImage(List<BufferedImage> resizedImages) throws IOException {
+
+        ByteArrayOutputStream imageData;
+
+        //If gif
+        if (resizedImages.size() > 1) {
+
+
+
+            GIFGenerator gen = new GIFGenerator();
+
+            imageData = gen.generate(1, resizedImages); //, double delayInSeconds)
+
+
+
+        } else { //If img
+
+            BufferedImage image = resizedImages.get(0);
+            ImageIO.write(image, "jpg", imageData = new ByteArrayOutputStream());
+
+        }
+
+        return imageData;
+
+    }
+
+    public List<BufferedImage> resizeImages(List<URL> urls, int width, int height) throws IOException {
+
+        List<BufferedImage> images = processImages(urls);
+
+
+        if (width == 0) {
+            for (BufferedImage image : images) {
+                Thumbnails.of(image)
+                        .size(1, height)
+                        .asBufferedImage();
+            }
+
+        } else if (height == 0){
+            for (BufferedImage image : images) {
+                Thumbnails.of(image)
+                        .size(width, 1)
+                        .asBufferedImage();
+            }
+
+        } else {
+
+            for (BufferedImage image : images) {
+                Thumbnails.of(image)
+                        .sourceRegion(Positions.CENTER, width, height)
+                        .size(width, height)
+                        .asBufferedImage();
+            }
+
+
+        }
+
+        return images;
+    }
+
+    public List<BufferedImage> processImages(List<URL> urls) throws IOException {
+
+        List<BufferedImage> images = new ArrayList<BufferedImage>();
+
+        for (URL url : urls) {
+            images.add(ImageIO.read(url));
+        }
+
+        return images;
+    }
 
 }
