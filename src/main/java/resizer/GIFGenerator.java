@@ -1,3 +1,5 @@
+package resizer;
+
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
 import resizer.ImageResize;
 import java.awt.image.BufferedImage;

@@ -1,5 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
+import resizer.GIFGenerator;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
