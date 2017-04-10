@@ -1,10 +1,8 @@
 package resizer;
 
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
-import resizer.ImageResize;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,13 +11,10 @@ import java.util.List;
 public class GIFGenerator {
 
     private AnimatedGifEncoder encoder;
-    private ImageResize resizer;
 
     public GIFGenerator() {
 
         encoder = new AnimatedGifEncoder();
-        resizer = new ImageResize(); /*TODO: Image resizer must be refactored to be used without sending a response
-                                       so that this class can resize the images before generating the gif! */
 
     }
 
