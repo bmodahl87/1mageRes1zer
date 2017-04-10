@@ -1,5 +1,6 @@
 package resizer;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
@@ -10,7 +11,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.Buffer;
 import java.util.*;
-
 import entity.ProcessedImage;
 import net.coobird.thumbnailator.*;
 

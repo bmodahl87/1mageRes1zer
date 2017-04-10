@@ -21,7 +21,7 @@ public class GIFGenerator {
     }
 
     //width/height for later use
-    public ByteArrayOutputStream generate(int delayInSeconds, int width, int height, ArrayList<BufferedImage> images) {
+    public ByteArrayOutputStream generate(int delayInSeconds, ArrayList<BufferedImage> images) {
 
         //Create a ByteArrayOutputStream to write the image to
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -37,8 +37,6 @@ public class GIFGenerator {
 
         //Add each image to the gif
         for (BufferedImage frame : images) {
-
-            //frame = imageresizer.resize(frame, width, height); /*RESIZE THIS IMAGE*/
 
             encoder.addFrame(frame);
 
