@@ -102,7 +102,7 @@ public class ImageResize {
                 return false;
             }
         }
-            return true;
+        return true;
     }
 
     public boolean CheckImage(List<URL> urls) throws IOException {

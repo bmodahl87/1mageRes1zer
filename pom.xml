@@ -78,6 +78,33 @@
       <version>2.5</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.madgag/animated-gif-lib -->
+    <!-- Dependency for generating gifs -->
+    <dependency>
+      <groupId>com.madgag</groupId>
+      <artifactId>animated-gif-lib</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-web-api</artifactId>
+      <version>7.0</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+
   </dependencies>
 
 
