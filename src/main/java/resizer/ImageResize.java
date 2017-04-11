@@ -37,9 +37,28 @@ public class ImageResize {
 
     @Path("/resizeImageJpeg")
     @GET
+    public Response resizeImage(@QueryParam("urls") List<URL> urls,
+                                @QueryParam("width") int width,
+                                @QueryParam("height") int height,
+                                @QueryParam("delay") double delay) throws IOException {
+
+        return processRequest(urls, width, height, delay);
+
+    }
+
+    @Path("/resizeImageJpeg")
+    @GET
     public Response resizeImageWidthOnly(@QueryParam("urls") List<URL> urls,
                                          @QueryParam("width") int width) throws IOException {
         return processRequest(urls, 0, width);
+
+    }
+    @Path("/resizeImageJpeg")
+    @GET
+    public Response resizeImageWidthOnly(@QueryParam("urls") List<URL> urls,
+                                         @QueryParam("width") int width,
+                                         @QueryParam("delay") double delay) throws IOException {
+        return processRequest(urls, 0, width, delay);
 
     }
 
@@ -51,15 +70,24 @@ public class ImageResize {
         return processRequest(urls, height, 0);
 
     }
+    @Path("/resizeImageJpeg")
+    @GET
+    public Response resizeImageHeightOnly(@QueryParam("urls") List<URL> urls,
+                                          @QueryParam("height") int height,
+                                          @QueryParam("delay") double delay) throws IOException {
+
+        return processRequest(urls, height, 0, delay);
+
+    }
 
 
-    public Response processRequest(List<URL> urls, int height, int width) throws IOException {
+    public Response processRequest(List<URL> urls, int height, int width, double delay) throws IOException {
 
         List<BufferedImage> resizedImages;
 
         if (validateInput(urls)) {
             resizedImages = resizeImages(urls, height, width);
-            byte[] imageData = createProcessedImage(resizedImages).toByteArray();
+            byte[] imageData = createProcessedImage(resizedImages, delay).toByteArray();
 
             return Response.ok(new ByteArrayInputStream(imageData), new MediaType("image", "jpg")).build();
 
@@ -110,7 +138,7 @@ public class ImageResize {
         return true;
     }
 
-    public ByteArrayOutputStream createProcessedImage(List<BufferedImage> resizedImages) throws IOException {
+    public ByteArrayOutputStream createProcessedImage(List<BufferedImage> resizedImages, double delay) throws IOException {
 
         ByteArrayOutputStream imageData;
 
@@ -119,8 +147,7 @@ public class ImageResize {
 
             GIFGenerator gen = new GIFGenerator();
 
-            //Should be able to pass a double now
-            imageData = gen.generate(1, resizedImages);
+            imageData = gen.generate(delay, resizedImages);
 
         //If img
         } else {
