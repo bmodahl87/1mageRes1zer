@@ -27,7 +27,7 @@ public class ImageResize {
 
     ProcessedImage processedImage = new ProcessedImage();
 
-    @Path("/resizeImageJpeg")
+    @Path("/resizeImage")
     @GET
     public Response resizeImage(@QueryParam("urls") List<URL> urls,
                                 @QueryParam("width") int width,
@@ -37,7 +37,7 @@ public class ImageResize {
 
     }
 
-    @Path("/resizeImageJpeg")
+    @Path("/resizeImage")
     @GET
     public Response resizeImage(@QueryParam("urls") List<URL> urls,
                                 @QueryParam("width") int width,
@@ -48,14 +48,14 @@ public class ImageResize {
 
     }
 
-    @Path("/resizeImageJpeg")
+    @Path("/resizeImage")
     @GET
     public Response resizeImageWidthOnly(@QueryParam("urls") List<URL> urls,
                                          @QueryParam("width") int width) throws IOException {
         return processRequest(urls, 0, width, 1);
 
     }
-    @Path("/resizeImageJpeg")
+    @Path("/resizeImage")
     @GET
     public Response resizeImageWidthOnly(@QueryParam("urls") List<URL> urls,
                                          @QueryParam("width") int width,
@@ -64,7 +64,7 @@ public class ImageResize {
 
     }
 
-    @Path("/resizeImageJpeg")
+    @Path("/resizeImage")
     @GET
     public Response resizeImageHeightOnly(@QueryParam("urls") List<URL> urls,
                                           @QueryParam("height") int height) throws IOException {
@@ -72,7 +72,7 @@ public class ImageResize {
         return processRequest(urls, height, 0, 1);
 
     }
-    @Path("/resizeImageJpeg")
+    @Path("/resizeImage")
     @GET
     public Response resizeImageHeightOnly(@QueryParam("urls") List<URL> urls,
                                           @QueryParam("height") int height,
@@ -114,21 +114,25 @@ public class ImageResize {
     }
 
     public boolean checkURLS(List<URL> urls) throws IOException {
-        for(URL url:urls) {
+        for (URL url : urls) {
             URLConnection connection = url.openConnection();
 
             String contentType = connection.getHeaderField("Content-Type");
 
 
             boolean isImage = contentType.startsWith("image/");
-            if(isImage == false){
+            if (isImage == false) {
 
                 processedImage.setSuccess(false);
                 processedImage.setMessage("Invalid URL!");
                 return false;
+            }
+
         }
+
         return true;
     }
+
 
     public boolean checkImages(List<URL> urls) throws IOException {
         for(URL url:urls) {
