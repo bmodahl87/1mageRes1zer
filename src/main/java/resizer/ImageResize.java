@@ -1,5 +1,6 @@
 package resizer;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
@@ -10,14 +11,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.Buffer;
 import java.util.*;
-
 import entity.ProcessedImage;
 import net.coobird.thumbnailator.*;
 
 
 
 /**
- * Created by bmodahl & also Keith on 3/7/17.
+ * Keith on 3/7/17.
  */
 
 @Path("/resizeImage")
@@ -32,7 +32,6 @@ public class ImageResize {
     @Path("/resizeImageJpeg")
     @GET
     @Produces("application/json")
-    //TODO need to make url a array
     public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
                                     @QueryParam("width") Integer width,
                                     @QueryParam("height") Integer height) throws IOException {
@@ -43,11 +42,10 @@ public class ImageResize {
     @Path("/resizeImageJpeg")
     @GET
     @Produces("application/json")
-    //TODO need to make url a array
     public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
                                     @QueryParam("width") Integer width,
                                     @QueryParam("height") Integer height,
-                                    @QueryParam("delay") Double delay) throws IOException {
+                                    @QueryParam("delay") Integer delay) throws IOException {
 
         return sendResponse(urls, height, width, delay);
     }
@@ -55,7 +53,6 @@ public class ImageResize {
     @Path("/resizeImageJpeg")
     @GET
     @Produces("application/json")
-    //TODO need to make url a array
     public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
                                     @QueryParam("width") Integer width) throws IOException {
 
@@ -65,10 +62,9 @@ public class ImageResize {
     @Path("/resizeImageJpeg")
     @GET
     @Produces("application/json")
-    //TODO need to make url a array
     public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
                                     @QueryParam("width") Integer width,
-                                    @QueryParam("delay") Double delay) throws IOException {
+                                    @QueryParam("delay") Integer delay) throws IOException {
 
         return sendResponse(urls, 0, width, delay);
 
@@ -77,7 +73,6 @@ public class ImageResize {
     @Path("/resizeImageJpeg")
     @GET
     @Produces("application/json")
-    //TODO need to make url a array
     public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
                                     @QueryParam("height") Integer height) throws IOException {
 
@@ -88,10 +83,9 @@ public class ImageResize {
     @Path("/resizeImageJpeg")
     @GET
     @Produces("application/json")
-    //TODO need to make url a array
     public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
                                     @QueryParam("height") Integer height,
-                                    @QueryParam("delay") Double delay) throws IOException {
+                                    @QueryParam("delay") Integer delay) throws IOException {
 
         return sendResponse(urls, height, 0, delay);
 
@@ -104,7 +98,7 @@ public class ImageResize {
 
         if (ValidateInput(urls)) {
             actualResizingPart(urls, height, width);
-            ByteArrayOutputStream imageData = CreateProcessedImage(resizedImages);
+            ByteArrayOutputStream imageData = CreateProcessedImage(resizedImages, delay);
 
             return Response.ok(new ByteArrayInputStream(imageData), new MediaType("image", "jpg")).build();
 
@@ -139,7 +133,7 @@ public class ImageResize {
                 return false;
             }
         }
-            return true;
+        return true;
     }
 
     public boolean CheckImage(List<URL> urls) throws IOException {
@@ -154,7 +148,7 @@ public class ImageResize {
         return true;
     }
 
-    public ByteArrayOutputStream CreateProcessedImage(ArrayList<BufferedImage> resizedImages) throws IOException {
+    public ByteArrayOutputStream CreateProcessedImage(ArrayList<BufferedImage> resizedImages, int delay) throws IOException {
 
         ByteArrayOutputStream imageData;
 
@@ -163,7 +157,7 @@ public class ImageResize {
 
             GIFGenerator gen = new GIFGenerator();
 
-            imageData = gen.generate(resizedImages); //, double delayInSeconds)
+            imageData = gen.generate(delay, resizedImages); //, double delayInSeconds)
 
         } else { //If img
 
