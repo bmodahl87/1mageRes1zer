@@ -114,22 +114,24 @@ public class ImageResize {
     }
 
     public boolean checkURLS(List<URL> urls) throws IOException {
-        for(URL url:urls) {
+        for (URL url : urls) {
             URLConnection connection = url.openConnection();
 
             String contentType = connection.getHeaderField("Content-Type");
 
 
             boolean isImage = contentType.startsWith("image/");
-            if(isImage == false) {
 
+            if(isImage == false) {
                 processedImage.setSuccess(false);
                 processedImage.setMessage("Invalid URL!");
                 return false;
             }
         }
+
         return true;
     }
+
 
     public boolean checkImages(List<URL> urls) throws IOException {
         for(URL url:urls) {
