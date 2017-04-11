@@ -37,6 +37,19 @@ public class ImageResize {
                                     @QueryParam("width") Integer width,
                                     @QueryParam("height") Integer height) throws IOException {
 
+        return sendResponse(urls, height, width, 0);
+    }
+
+    @Path("/resizeImageJpeg")
+    @GET
+    @Produces("application/json")
+    //TODO need to make url a array
+    public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
+                                    @QueryParam("width") Integer width,
+                                    @QueryParam("height") Integer height,
+                                    @QueryParam("delay") Double delay) throws IOException {
+
+        return sendResponse(urls, height, width, delay);
     }
 
     @Path("/resizeImageJpeg")
@@ -46,6 +59,18 @@ public class ImageResize {
     public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
                                     @QueryParam("width") Integer width) throws IOException {
 
+        return sendResponse(urls, 0, width, 0);
+    }
+
+    @Path("/resizeImageJpeg")
+    @GET
+    @Produces("application/json")
+    //TODO need to make url a array
+    public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
+                                    @QueryParam("width") Integer width,
+                                    @QueryParam("delay") Double delay) throws IOException {
+
+        return sendResponse(urls, 0, width, delay);
 
     }
 
@@ -56,12 +81,24 @@ public class ImageResize {
     public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
                                     @QueryParam("height") Integer height) throws IOException {
 
-        return processRequest(urls, height, 0  );
+        return sendResponse(urls, height, 0,0);
+
+    }
+
+    @Path("/resizeImageJpeg")
+    @GET
+    @Produces("application/json")
+    //TODO need to make url a array
+    public Response resizeJpegImage(@QueryParam("urls") List<URL> urls,
+                                    @QueryParam("height") Integer height,
+                                    @QueryParam("delay") Double delay) throws IOException {
+
+        return sendResponse(urls, height, 0, delay);
 
     }
 
 
-    public Response sendResponse(List<URL> urls, int height, int width) throws IOException {
+    public Response sendResponse(List<URL> urls, int height, int width, double delay) throws IOException {
 
         ArrayList<BufferedImage> resizedImages = new ArrayList<BufferedImage>();
 
