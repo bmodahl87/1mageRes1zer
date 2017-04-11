@@ -31,7 +31,7 @@ public class ImageResize {
                                 @QueryParam("width") int width,
                                 @QueryParam("height") int height) throws IOException {
 
-        return processRequest(urls, width, height);
+        return processRequest(urls, width, height, 1);
 
     }
 
@@ -50,7 +50,7 @@ public class ImageResize {
     @GET
     public Response resizeImageWidthOnly(@QueryParam("urls") List<URL> urls,
                                          @QueryParam("width") int width) throws IOException {
-        return processRequest(urls, 0, width);
+        return processRequest(urls, 0, width, 1);
 
     }
     @Path("/resizeImageJpeg")
@@ -67,7 +67,7 @@ public class ImageResize {
     public Response resizeImageHeightOnly(@QueryParam("urls") List<URL> urls,
                                           @QueryParam("height") int height) throws IOException {
 
-        return processRequest(urls, height, 0);
+        return processRequest(urls, height, 0, 1);
 
     }
     @Path("/resizeImageJpeg")
