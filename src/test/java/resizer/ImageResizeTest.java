@@ -113,17 +113,17 @@ public class ImageResizeTest {
 
     }
 
-    @Test
-    public void createProcessedImage() throws Exception {
-
-        images.remove(0);
-
-        ByteArrayOutputStream outputImage = resizer.createProcessedImage(images);
-
-        OutputStream outputStream = new FileOutputStream("src/test/resources/createProcessedImageTest.jpg");
-        outputImage.writeTo(outputStream);
-
-    }
+//    @Test
+//    public void createProcessedImage() throws Exception {
+//
+//        images.remove(0);
+//
+//        ByteArrayOutputStream outputImage = resizer.createProcessedImage(images);
+//
+//        OutputStream outputStream = new FileOutputStream("src/test/resources/createProcessedImageTest.jpg");
+//        outputImage.writeTo(outputStream);
+//
+//    }
 
     @Test
     public void resizeImages() throws Exception {

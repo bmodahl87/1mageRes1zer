@@ -13,6 +13,7 @@ import java.util.List;
 import entity.ProcessedImage;
 import net.coobird.thumbnailator.*;
 import net.coobird.thumbnailator.geometry.Positions;
+import org.apache.log4j.Logger;
 
 
 /**
@@ -22,6 +23,7 @@ import net.coobird.thumbnailator.geometry.Positions;
 //TODO: make api endpoint the userdocs page (index)
 @Path("/resizeImage")
 public class ImageResize {
+    private Logger log = Logger.getLogger(this.getClass());
 
     ProcessedImage processedImage = new ProcessedImage();
 
@@ -90,7 +92,8 @@ public class ImageResize {
             resizedImages = resizeImages(urls, height, width);
             byte[] imageData = createProcessedImage(resizedImages, delay).toByteArray();
 
-            return Response.ok(new ByteArrayInputStream(imageData), new MediaType("image", "jpg")).build();
+            log.info(processedImage.getSubType());
+            return Response.ok(new ByteArrayInputStream(imageData), new MediaType("image", processedImage.getSubType())).build();
 
         } else {
 
@@ -116,12 +119,16 @@ public class ImageResize {
 
             String contentType = connection.getHeaderField("Content-Type");
 
+
             boolean isImage = contentType.startsWith("image/");
             if(isImage == false){
 
                 processedImage.setSuccess(false);
                 processedImage.setMessage("Invalid URL!");
                 return false;
+            } else {
+                processedImage.setSubType(contentType.substring(6));
+                log.info(processedImage.getSubType());
             }
         }
         return true;
@@ -163,7 +170,7 @@ public class ImageResize {
         } else {
 
             BufferedImage image = resizedImages.get(0);
-            ImageIO.write(image, "jpg", imageData = new ByteArrayOutputStream());
+            ImageIO.write(image, processedImage.getSubType(), imageData = new ByteArrayOutputStream());
 
         }
 
@@ -174,35 +181,53 @@ public class ImageResize {
     public List<BufferedImage> resizeImages(List<URL> urls, int width, int height) throws IOException {
 
         List<BufferedImage> images = processImages(urls);
+        List<BufferedImage> resizedImages = new ArrayList<BufferedImage>();
 
 
         if (width == 0) {
             for (BufferedImage image : images) {
-                Thumbnails.of(image)
-                        .size(1, height)
+                BufferedImage thumbnail = Thumbnails.of(image)
+                        .size(image.getWidth(), height)
+                        .keepAspectRatio(true)
+                        .outputFormat(processedImage.getSubType())
                         .asBufferedImage();
+                resizedImages.add(thumbnail);
+                log.info(image.getHeight());
+
             }
+
 
         } else if (height == 0){
             for (BufferedImage image : images) {
-                Thumbnails.of(image)
-                        .size(width, 1)
+                BufferedImage thumbnail = Thumbnails.of(image)
+                        .size(width, image.getHeight())
+                        .keepAspectRatio(true)
+                        .outputFormat(processedImage.getSubType())
                         .asBufferedImage();
+                resizedImages.add(thumbnail);
+                log.info(image.getWidth());
+
             }
+
 
         } else {
 
             for (BufferedImage image : images) {
-                Thumbnails.of(image)
-                        .sourceRegion(Positions.CENTER, width, height)
+                BufferedImage thumbnail = Thumbnails.of(image)
                         .size(width, height)
+                        .keepAspectRatio(false)
+                        .outputFormat(processedImage.getSubType())
                         .asBufferedImage();
+                resizedImages.add(thumbnail);
+                log.info(image.getWidth());
+                log.info(image.getHeight());
+
             }
 
 
         }
+        return resizedImages;
 
-        return images;
     }
 
     public List<BufferedImage> processImages(List<URL> urls) throws IOException {
