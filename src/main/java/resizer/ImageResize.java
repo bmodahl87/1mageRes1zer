@@ -3,7 +3,6 @@ package resizer;
 import javax.imageio.ImageIO;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
@@ -74,7 +73,7 @@ public class ImageResize {
 
     public boolean validateInput(List<URL> urls) throws IOException {
         if (checkURLS(urls)){
-            if(checkImage(urls)){
+            if(checkImages(urls)){
                 return true;
             }
         }
@@ -98,7 +97,7 @@ public class ImageResize {
         return true;
     }
 
-    public boolean checkImage(List<URL> urls) throws IOException {
+    public boolean checkImages(List<URL> urls) throws IOException {
         for(URL url:urls) {
             BufferedImage image = ImageIO.read(url);
             if(image == null){
