@@ -126,10 +126,6 @@ public class ImageResize {
                 processedImage.setSuccess(false);
                 processedImage.setMessage("Invalid URL!");
                 return false;
-            } else {
-                processedImage.setSubType(contentType.substring(6));
-                log.info(processedImage.getSubType());
-            }
         }
         return true;
     }
@@ -147,11 +143,13 @@ public class ImageResize {
         return true;
     }
 
-    public void setImageType(List<URL> urls){
+    public void setImageType(List<URL> urls) throws IOException {
         if (urls.size() > 1){
-
+            processedImage.setSubType("gif");
         } else {
-
+            URLConnection connection = urls.get(0).openConnection();
+            String contentType = connection.getHeaderField("Content-Type");
+            processedImage.setSubType(contentType.substring(6));
         }
     }
 
