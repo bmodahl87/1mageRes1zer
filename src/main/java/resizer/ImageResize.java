@@ -86,6 +86,7 @@ public class ImageResize {
         List<BufferedImage> resizedImages;
 
         if (validateInput(urls)) {
+            setImageType(urls);
             resizedImages = resizeImages(urls, height, width);
             byte[] imageData = createProcessedImage(resizedImages, delay).toByteArray();
 
@@ -130,12 +131,21 @@ public class ImageResize {
         for(URL url:urls) {
             BufferedImage image = ImageIO.read(url);
             if(image == null){
+
                 processedImage.setSuccess(false);
                 processedImage.setMessage("Invalid Image!");
                 return false;
             }
         }
         return true;
+    }
+
+    public void setImageType(List<URL> urls){
+        if (urls.size() > 1){
+
+        } else {
+
+        }
     }
 
     public ByteArrayOutputStream createProcessedImage(List<BufferedImage> resizedImages, double delay) throws IOException {
