@@ -27,5 +27,9 @@ public class ProcessedImage {
 
     public void setMessage(String message) { this.message = message; }
 
+    public String getSubType() { return subType; }
+
+    public void setSubType(String subType) { this.subType = subType; }
+
 
 }
