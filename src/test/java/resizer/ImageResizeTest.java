@@ -69,12 +69,12 @@ public class ImageResizeTest {
 
     }
 
-    @Test
-    public void processRequest() throws Exception {
-
-        response = resizer.processRequest(urls, 300, 100);
-
-    }
+//    @Test
+//    public void processRequest() throws Exception {
+//
+//        response = resizer.processRequest(urls, 300, 100);
+//
+//    }
 
     @Test
     public void validateInput() throws Exception {
@@ -103,15 +103,15 @@ public class ImageResizeTest {
 
     }
 
-    @Test
-    public void createProcessedGif() throws Exception {
-
-        ByteArrayOutputStream outputImage = resizer.createProcessedImage(images);
-
-        OutputStream outputStream = new FileOutputStream("src/test/resources/createProcessedGifTest.gif");
-        outputImage.writeTo(outputStream);
-
-    }
+//    @Test
+//    public void createProcessedGif() throws Exception {
+//
+//        ByteArrayOutputStream outputImage = resizer.createProcessedImage(images);
+//
+//        OutputStream outputStream = new FileOutputStream("src/test/resources/createProcessedGifTest.gif");
+//        outputImage.writeTo(outputStream);
+//
+//    }
 
 //    @Test
 //    public void createProcessedImage() throws Exception {
