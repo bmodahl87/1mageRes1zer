@@ -19,6 +19,7 @@ import net.coobird.thumbnailator.geometry.Positions;
  * Created by bmodahl & also Keith on 3/7/17.
  */
 
+//TODO: make api endpoint the userdocs page (index)
 @Path("/resizeImage")
 public class ImageResize {
 
