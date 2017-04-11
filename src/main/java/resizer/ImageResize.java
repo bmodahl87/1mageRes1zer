@@ -117,15 +117,13 @@ public class ImageResize {
         //If gif
         if (resizedImages.size() > 1) {
 
-
-
             GIFGenerator gen = new GIFGenerator();
 
-            imageData = gen.generate(1, resizedImages); //, double delayInSeconds)
+            //Should be able to pass a double now
+            imageData = gen.generate(1, resizedImages);
 
-
-
-        } else { //If img
+        //If img
+        } else {
 
             BufferedImage image = resizedImages.get(0);
             ImageIO.write(image, "jpg", imageData = new ByteArrayOutputStream());

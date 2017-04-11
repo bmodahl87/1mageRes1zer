@@ -18,8 +18,7 @@ public class GIFGenerator {
 
     }
 
-    //width/height for later use
-    public ByteArrayOutputStream generate(int delayInSeconds, List<BufferedImage> images) {
+    public ByteArrayOutputStream generate(double delayInSeconds, List<BufferedImage> images) {
 
         //Create a ByteArrayOutputStream to write the image to
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -28,7 +27,7 @@ public class GIFGenerator {
         encoder.start(outputStream);
 
         //Set delay (converted to milliseconds)
-        encoder.setDelay(1000 * delayInSeconds);
+        encoder.setDelay((int) Math.round(1000 * delayInSeconds));
 
         //Set the gif to repeat (0 = infinite, -1 = 1 cycle, >= 1 indicates number of cycles)
         encoder.setRepeat(0);
