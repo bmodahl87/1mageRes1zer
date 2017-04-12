@@ -69,12 +69,12 @@ public class ImageResizeTest {
 
     }
 
-//    @Test
-//    public void processRequest() throws Exception {
-//
-//        response = resizer.processRequest(urls, 300, 100);
-//
-//    }
+    @Test
+    public void processRequest() throws Exception {
+
+        response = resizer.processRequest(urls, 300, 100, 1);
+
+    }
 
     @Test
     public void validateInput() throws Exception {
@@ -103,27 +103,25 @@ public class ImageResizeTest {
 
     }
 
-//    @Test
-//    public void createProcessedGif() throws Exception {
-//
-//        ByteArrayOutputStream outputImage = resizer.createProcessedImage(images);
-//
-//        OutputStream outputStream = new FileOutputStream("src/test/resources/createProcessedGifTest.gif");
-//        outputImage.writeTo(outputStream);
-//
-//    }
+    @Test
+    public void createProcessedGif() throws Exception {
 
-//    @Test
-//    public void createProcessedImage() throws Exception {
-//
-//        images.remove(0);
-//
-//        ByteArrayOutputStream outputImage = resizer.createProcessedImage(images);
-//
-//        OutputStream outputStream = new FileOutputStream("src/test/resources/createProcessedImageTest.jpg");
-//        outputImage.writeTo(outputStream);
-//
-//    }
+        ByteArrayOutputStream processedImage = resizer.createProcessedImage(images, 1);
+
+        OutputStream outputStream = new FileOutputStream("src/test/resources/createProcessedGifTest.");
+        processedImage.writeTo(outputStream);
+
+    }
+
+    @Test
+    public void createProcessedImage() throws Exception {
+
+        ByteArrayOutputStream outputImage = resizer.createProcessedImage(images, 1);
+
+        OutputStream outputStream = new FileOutputStream("src/test/resources/createProcessedImageTest." + resizer.getProcessedImage().getSubType());
+        outputImage.writeTo(outputStream);
+
+    }
 
     @Test
     public void resizeImages() throws Exception {

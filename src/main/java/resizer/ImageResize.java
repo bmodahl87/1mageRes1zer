@@ -29,11 +29,41 @@ public class ImageResize {
 
     @Path("/")
     @GET
-    public Response resizeImage(@QueryParam("urls") List<URL> urls,
-                                @QueryParam("width") int width,
-                                @QueryParam("height") int height) throws IOException {
+    public Response resizeImageWithDelay(@QueryParam("urls") List<URL> urls,
+                                         @QueryParam("width") int width,
+                                         @QueryParam("height") int height,
+                                         @QueryParam("delay") double delay) throws IOException {
 
-        return processRequest(urls, width, height, 1);
+        if (width == 0 && height == 0) {
+
+            return resizeImageUrlsOnly(urls);
+
+        } else {
+
+            log.info("DELAY when delay is set: " + delay);
+
+            return processRequest(urls, width, height, delay);
+
+        }
+
+    }
+
+    @Path("/")
+    @GET
+    public Response resizeImageWidthOnlyWithDelay(@QueryParam("urls") List<URL> urls,
+                                                  @QueryParam("width") int width,
+                                                  @QueryParam("delay") double delay) throws IOException {
+        return processRequest(urls, 0, width, delay);
+
+    }
+
+    @Path("/")
+    @GET
+    public Response resizeImageHeightOnlyWithDelay(@QueryParam("urls") List<URL> urls,
+                                                   @QueryParam("height") int height,
+                                                   @QueryParam("delay") double delay) throws IOException {
+
+        return processRequest(urls, height, 0, delay);
 
     }
 
@@ -41,10 +71,9 @@ public class ImageResize {
     @GET
     public Response resizeImage(@QueryParam("urls") List<URL> urls,
                                 @QueryParam("width") int width,
-                                @QueryParam("height") int height,
-                                @QueryParam("delay") double delay) throws IOException {
+                                @QueryParam("height") int height) throws IOException {
 
-        return processRequest(urls, width, height, delay);
+        return processRequest(urls, width, height, 0);
 
     }
 
@@ -52,38 +81,55 @@ public class ImageResize {
     @GET
     public Response resizeImageWidthOnly(@QueryParam("urls") List<URL> urls,
                                          @QueryParam("width") int width) throws IOException {
-        return processRequest(urls, 0, width, 1);
+        return processRequest(urls, 0, width, 0);
 
     }
-    @Path("/")
-    @GET
-    public Response resizeImageWidthOnly(@QueryParam("urls") List<URL> urls,
-                                         @QueryParam("width") int width,
-                                         @QueryParam("delay") double delay) throws IOException {
-        return processRequest(urls, 0, width, delay);
 
-    }
 
     @Path("/")
     @GET
     public Response resizeImageHeightOnly(@QueryParam("urls") List<URL> urls,
                                           @QueryParam("height") int height) throws IOException {
 
-        return processRequest(urls, height, 0, 1);
+        return processRequest(urls, height, 0, 0);
 
     }
+
     @Path("/")
     @GET
-    public Response resizeImageHeightOnly(@QueryParam("urls") List<URL> urls,
-                                          @QueryParam("height") int height,
-                                          @QueryParam("delay") double delay) throws IOException {
+    public Response resizeImageUrlsOnly(@QueryParam("urls") List<URL> urls) throws IOException {
 
-        return processRequest(urls, height, 0, delay);
+        int width = 0;
+        int height = 0;
+
+        if (validateInput(urls)) {
+
+
+            List<BufferedImage> images = processImages(urls);
+
+            BufferedImage firstImg = images.get(0);
+
+            width = firstImg.getWidth();
+            height = firstImg.getHeight();
+
+            log.info("WIDTH ------> " + width);
+            log.info("HEIGHT ------> " + height);
+
+        } else {
+
+
+
+        }
+
+        return processRequest(urls, height, width, 0);
+
 
     }
 
-
     public Response processRequest(List<URL> urls, int height, int width, double delay) throws IOException {
+
+
+        log.info("DELAY within ProcessRequest: " + delay);
 
         List<BufferedImage> resizedImages;
 
@@ -98,6 +144,7 @@ public class ImageResize {
         } else {
 
             return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
+
         }
 
     }
@@ -105,6 +152,9 @@ public class ImageResize {
 
 
     public boolean validateInput(List<URL> urls) throws IOException {
+
+        log.info("VALIDATING.... <---------------");
+
         if (checkURLS(urls)){
             if(checkImages(urls)){
                 return true;
@@ -243,4 +293,10 @@ public class ImageResize {
         return images;
     }
 
+
+    public ProcessedImage getProcessedImage() {
+
+        return processedImage;
+
+    }
 }

@@ -1,6 +1,8 @@
 package resizer;
 
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
+import org.apache.log4j.Logger;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 public class GIFGenerator {
 
     private AnimatedGifEncoder encoder;
+    private Logger log = Logger.getLogger(this.getClass());
 
     public GIFGenerator() {
 
@@ -28,6 +31,8 @@ public class GIFGenerator {
 
         //Set delay (converted to milliseconds)
         encoder.setDelay((int) Math.round(1000 * delayInSeconds));
+
+        log.info("DELAY within Generator: " + delayInSeconds);
 
         //Set the gif to repeat (0 = infinite, -1 = 1 cycle, >= 1 indicates number of cycles)
         encoder.setRepeat(0);
