@@ -5,6 +5,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.awt.image.*;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
@@ -12,7 +13,7 @@ import java.util.List;
 
 import entity.ProcessedImage;
 import net.coobird.thumbnailator.*;
-import net.coobird.thumbnailator.geometry.Positions;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.log4j.Logger;
 
 
@@ -20,76 +21,138 @@ import org.apache.log4j.Logger;
  * Created by bmodahl & also Keith on 3/7/17.
  */
 
-//TODO: make api endpoint the userdocs page (index)
-@Path("/resizeImage")
+@Path("/image")
 public class ImageResize {
     private Logger log = Logger.getLogger(this.getClass());
 
     ProcessedImage processedImage = new ProcessedImage();
 
-    @Path("/resizeImage")
+    /**
+     *
+     * @param urls
+     * @param width
+     * @param height
+     * @param delay
+     * @return
+     * @throws IOException
+     */
+    @Path("/")
     @GET
-    public Response resizeImage(@QueryParam("urls") List<URL> urls,
-                                @QueryParam("width") int width,
-                                @QueryParam("height") int height) throws IOException {
+    public Response filterRequest(@QueryParam("urls") List<URL> urls,
+                                  @QueryParam("width") int width,
+                                  @QueryParam("height") int height,
+                                  @QueryParam("delay") double delay) throws IOException {
 
-        return processRequest(urls, width, height, 1);
+        Response response = null;
+
+        if (urls.isEmpty()) {
+
+            processedImage.setSuccess(false);
+            processedImage.setMessage("No URL received.");
+            response = Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
+
+        } else if (width != 0 && height != 0 && delay == 0){
+
+            processedImage.setSuccess(true);
+            response = processRequest(urls, height, width, 0);
+
+        } else if (width != 0 && height != 0 && delay != 0) {
+
+            processedImage.setSuccess(true);
+            response = processRequest(urls, height, width, delay);
+
+        } else if (width == 0 && height != 0 && delay == 0) {
+
+            processedImage.setSuccess(true);
+            response = processRequest(urls, height, 0, 0);
+
+        } else if (width == 0 && height != 0 && delay != 0) {
+
+            processedImage.setSuccess(true);
+            response = processRequest(urls, height, 0, delay);
+
+        } else if (width != 0 && height == 0 && delay == 0) {
+
+            processedImage.setSuccess(true);
+            response = processRequest(urls, 0, width, 0);
+
+        } else if (width != 0 && height == 0 && delay != 0) {
+
+            processedImage.setSuccess(true);
+            response = processRequest(urls, 0, width, delay);
+
+        } else if (width == 0 && height == 0 && delay == 0) {
+
+            processedImage.setSuccess(true);
+            response = sendBackOriginalImage(urls, 0);
+
+        } else if (width == 0 && height == 0 && delay != 0) {
+
+            processedImage.setSuccess(true);
+            response = sendBackOriginalImage(urls, delay);
+
+        } else {
+
+            processedImage.setSuccess(false);
+            processedImage.setMessage("Unable to process request, reason unknown.");
+            response = Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
+            log.debug("Unable to filter request within filterRequest()");
+
+        }
+
+        return response;
 
     }
 
-    @Path("/resizeImage")
-    @GET
-    public Response resizeImage(@QueryParam("urls") List<URL> urls,
-                                @QueryParam("width") int width,
-                                @QueryParam("height") int height,
-                                @QueryParam("delay") double delay) throws IOException {
+    /**
+     *
+     * @param urls
+     * @param delay
+     * @return
+     * @throws IOException
+     */
+    public Response sendBackOriginalImage(List<URL> urls, double delay) throws IOException {
 
-        return processRequest(urls, width, height, delay);
+        int width = 0;
+        int height = 0;
 
-    }
+        if (validateInput(urls)) {
 
-    @Path("/resizeImage")
-    @GET
-    public Response resizeImageWidthOnly(@QueryParam("urls") List<URL> urls,
-                                         @QueryParam("width") int width) throws IOException {
-        return processRequest(urls, 0, width, 1);
 
-    }
-    @Path("/resizeImage")
-    @GET
-    public Response resizeImageWidthOnly(@QueryParam("urls") List<URL> urls,
-                                         @QueryParam("width") int width,
-                                         @QueryParam("delay") double delay) throws IOException {
-        return processRequest(urls, 0, width, delay);
+            List<BufferedImage> images = processImages(urls);
 
-    }
+            BufferedImage firstImg = images.get(0);
 
-    @Path("/resizeImage")
-    @GET
-    public Response resizeImageHeightOnly(@QueryParam("urls") List<URL> urls,
-                                          @QueryParam("height") int height) throws IOException {
+            width = firstImg.getWidth();
+            height = firstImg.getHeight();
 
-        return processRequest(urls, height, 0, 1);
+            processedImage.setSuccess(true);
 
-    }
-    @Path("/resizeImage")
-    @GET
-    public Response resizeImageHeightOnly(@QueryParam("urls") List<URL> urls,
-                                          @QueryParam("height") int height,
-                                          @QueryParam("delay") double delay) throws IOException {
+            return processRequest(urls, height, width, delay);
 
-        return processRequest(urls, height, 0, delay);
+        } else {
+            processedImage.setSuccess(false);
+            return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
+        }
 
     }
 
-
+    /**
+     *
+     * @param urls
+     * @param height
+     * @param width
+     * @param delay
+     * @return
+     * @throws IOException
+     */
     public Response processRequest(List<URL> urls, int height, int width, double delay) throws IOException {
 
         List<BufferedImage> resizedImages;
 
         if (validateInput(urls)) {
             setImageType(urls);
-            resizedImages = resizeImages(urls, height, width);
+            resizedImages = resizeImages(urls, width, height);
             byte[] imageData = createProcessedImage(resizedImages, delay).toByteArray();
 
             log.info(processedImage.getSubType());
@@ -98,13 +161,19 @@ public class ImageResize {
         } else {
 
             return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
+
         }
 
     }
 
-
-
+    /**
+     *
+     * @param urls
+     * @return
+     * @throws IOException
+     */
     public boolean validateInput(List<URL> urls) throws IOException {
+
         if (checkURLS(urls)){
             if(checkImages(urls)){
                 return true;
@@ -113,26 +182,56 @@ public class ImageResize {
         return false;
     }
 
+    /**
+     *
+     * @param urls
+     * @return
+     * @throws IOException
+     */
     public boolean checkURLS(List<URL> urls) throws IOException {
+
+        UrlValidator urlValidator = new UrlValidator();
+
         for (URL url : urls) {
-            URLConnection connection = url.openConnection();
 
-            String contentType = connection.getHeaderField("Content-Type");
+            String urlString = url.toExternalForm();
+
+            if (urlValidator.isValid(urlString)) {
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+                String contentType = connection.getHeaderField("Content-Type");
+
+                boolean isImage = contentType.startsWith("image/");
+
+                if (isImage == false) {
+
+                    processedImage.setSuccess(false);
+                    processedImage.setMessage("Invalid URL!");
+                    return false;
+                }
 
 
-            boolean isImage = contentType.startsWith("image/");
+            } else {
 
-            if(isImage == false) {
                 processedImage.setSuccess(false);
-                processedImage.setMessage("Invalid URL!");
+                processedImage.setMessage("Broken URL!");
                 return false;
+
             }
+
         }
 
         return true;
     }
 
 
+    /**
+     *
+     * @param urls
+     * @return
+     * @throws IOException
+     */
     public boolean checkImages(List<URL> urls) throws IOException {
         for(URL url:urls) {
             BufferedImage image = ImageIO.read(url);
@@ -146,6 +245,11 @@ public class ImageResize {
         return true;
     }
 
+    /**
+     *
+     * @param urls
+     * @throws IOException
+     */
     public void setImageType(List<URL> urls) throws IOException {
         if (urls.size() > 1){
             processedImage.setSubType("gif");
@@ -156,6 +260,14 @@ public class ImageResize {
         }
     }
 
+
+    /**
+     *
+     * @param resizedImages
+     * @param delay
+     * @return
+     * @throws IOException
+     */
     public ByteArrayOutputStream createProcessedImage(List<BufferedImage> resizedImages, double delay) throws IOException {
 
         ByteArrayOutputStream imageData;
@@ -167,7 +279,7 @@ public class ImageResize {
 
             imageData = gen.generate(delay, resizedImages);
 
-        //If img
+            //If img
         } else {
 
             BufferedImage image = resizedImages.get(0);
@@ -176,13 +288,22 @@ public class ImageResize {
         }
 
         return imageData;
+
     }
 
+
+    /**
+     *
+     * @param urls
+     * @param width
+     * @param height
+     * @return
+     * @throws IOException
+     */
     public List<BufferedImage> resizeImages(List<URL> urls, int width, int height) throws IOException {
 
         List<BufferedImage> images = processImages(urls);
         List<BufferedImage> resizedImages = new ArrayList<BufferedImage>();
-
 
         if (width == 0) {
             for (BufferedImage image : images) {
@@ -226,10 +347,20 @@ public class ImageResize {
 
 
         }
+
+        processedImage.setResizedImages(resizedImages);
+
         return resizedImages;
 
     }
 
+
+    /**
+     *
+     * @param urls
+     * @return
+     * @throws IOException
+     */
     public List<BufferedImage> processImages(List<URL> urls) throws IOException {
 
         List<BufferedImage> images = new ArrayList<BufferedImage>();
@@ -237,7 +368,23 @@ public class ImageResize {
         for (URL url : urls) {
             images.add(ImageIO.read(url));
         }
+
+        processedImage.setImagesReceived(images);
+
         return images;
     }
 
+
+    /**
+     *
+     * @return
+     */
+    public ProcessedImage getProcessedImage() {
+
+        return processedImage;
+
+    }
 }
+
+
+

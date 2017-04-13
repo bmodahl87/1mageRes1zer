@@ -1,3 +1,5 @@
+
+
 package controller;
 
 import javax.servlet.RequestDispatcher;
@@ -6,9 +8,6 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-/**
- * Created by katana on 3/28/17.
- */
 @WebServlet(
 
         name = "index",
@@ -16,8 +15,24 @@ import java.io.IOException;
 
 )
 
+
+/**
+ * ShowUserDocs
+ *
+ * Servlet that serves the user-docs jsp
+ * as the index of the application
+ */
 public class ShowUserDocs extends HttpServlet {
 
+
+    /**
+     * Serves the user-docs page as the index of the application
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
