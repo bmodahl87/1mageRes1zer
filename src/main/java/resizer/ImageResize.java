@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
  * Created by bmodahl & also Keith on 3/7/17.
  */
 
-//TODO: make api endpoint the userdocs page (index)
 @Path("/image")
 public class ImageResize {
     private Logger log = Logger.getLogger(this.getClass());
@@ -31,7 +30,7 @@ public class ImageResize {
 
     @Path("/")
     @GET
-    public Response resizeImageWithDelay(@QueryParam("urls") List<URL> urls,
+    public Response filterRequest(@QueryParam("urls") List<URL> urls,
                                          @QueryParam("width") int width,
                                          @QueryParam("height") int height,
                                          @QueryParam("delay") double delay) throws IOException {
@@ -78,7 +77,7 @@ public class ImageResize {
 
         } else {
 
-            log.error("SOMETHING WENT WRONG!!!!!!!!!!!!!!!!!!!!!!!!!");
+            log.debug("Unable to filter request within filterRequest()");
 
         }
 
@@ -100,10 +99,6 @@ public class ImageResize {
 
             width = firstImg.getWidth();
             height = firstImg.getHeight();
-
-            log.info("WIDTH ------> " + width);
-            log.info("HEIGHT ------> " + height);
-
             return processRequest(urls, height, width, delay);
 
         } else {
@@ -114,9 +109,6 @@ public class ImageResize {
     }
 
     public Response processRequest(List<URL> urls, int height, int width, double delay) throws IOException {
-
-
-        log.info("DELAY within ProcessRequest: " + delay);
 
         List<BufferedImage> resizedImages;
 
@@ -140,8 +132,6 @@ public class ImageResize {
 
     public boolean validateInput(List<URL> urls) throws IOException {
 
-        log.info("VALIDATING.... <---------------");
-
         if (checkURLS(urls)){
             if(checkImages(urls)){
                 return true;
@@ -157,7 +147,6 @@ public class ImageResize {
         for (URL url : urls) {
 
             String urlString = url.toExternalForm();
-            log.info("URL STRING --- " + urlString);
 
             if (urlValidator.isValid(urlString)) {
 

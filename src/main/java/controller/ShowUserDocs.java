@@ -17,12 +17,10 @@ import java.io.IOException;
 
 
 /**
- *
  * ShowUserDocs
  *
  * Servlet that serves the user-docs jsp
  * as the index of the application
- *
  */
 public class ShowUserDocs extends HttpServlet {
 

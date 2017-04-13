@@ -21,7 +21,7 @@ public class GIFGenerator {
     private AnimatedGifEncoder encoder;
 
     /**
-     * Class constructor.
+     * Class constructor
      * Initializes an AnimatedGifEncoder
      */
     public GIFGenerator() {
@@ -33,8 +33,6 @@ public class GIFGenerator {
 
 
     /**
-     *
-     *
      * @param delayInSeconds - Number of seconds to delay in between images, default is 0
      * @param images         - List of buffered images to be generated into a gif
      * @return
