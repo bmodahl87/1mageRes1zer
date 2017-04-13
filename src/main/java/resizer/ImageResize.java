@@ -13,7 +13,6 @@ import java.util.List;
 
 import entity.ProcessedImage;
 import net.coobird.thumbnailator.*;
-import net.coobird.thumbnailator.geometry.Positions;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.log4j.Logger;
 
@@ -76,12 +75,12 @@ public class ImageResize {
         } else if (width == 0 && height == 0 && delay == 0) {
 
             processedImage.setSuccess(true);
-            response = resizeImageUrlsOnly(urls, 0);
+            response = sendBackOriginalImage(urls, 0);
 
         } else if (width == 0 && height == 0 && delay != 0) {
 
             processedImage.setSuccess(true);
-            response = resizeImageUrlsOnly(urls, delay);
+            response = sendBackOriginalImage(urls, delay);
 
         } else {
 
@@ -96,7 +95,7 @@ public class ImageResize {
 
     }
 
-    public Response resizeImageUrlsOnly(List<URL> urls, double delay) throws IOException {
+    public Response sendBackOriginalImage(List<URL> urls, double delay) throws IOException {
 
         int width = 0;
         int height = 0;
@@ -110,10 +109,13 @@ public class ImageResize {
 
             width = firstImg.getWidth();
             height = firstImg.getHeight();
+
+            processedImage.setSuccess(true);
+
             return processRequest(urls, height, width, delay);
 
         } else {
-
+            processedImage.setSuccess(false);
             return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
         }
 
@@ -280,6 +282,9 @@ public class ImageResize {
 
 
         }
+
+        processedImage.setResizedImages(resizedImages);
+
         return resizedImages;
 
     }
@@ -291,6 +296,8 @@ public class ImageResize {
         for (URL url : urls) {
             images.add(ImageIO.read(url));
         }
+
+        processedImage.setImagesReceived(images);
 
         return images;
     }

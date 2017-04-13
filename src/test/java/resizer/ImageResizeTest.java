@@ -55,14 +55,8 @@ public class ImageResizeTest {
         response = resizer.filterRequest(new ArrayList<URL>(), 0, 0, 0);
         assertTrue("Should be false", resizer.processedImage.getSuccess() == false);
 
-
-    }
-
-    @Test
-    public void filterRequestWidthHeightNoDelay() throws Exception {
-
-        response = resizer.filterRequest(urls, 500, 500, 0);
-        assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+        String entityClass = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class entity.ProcessedImage", entityClass);
 
 
     }
@@ -73,59 +67,112 @@ public class ImageResizeTest {
         response = resizer.filterRequest(urls, 500, 500, 0);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
 
-
-    }
-
-    @Test
-    public void filterRequestWidthHeightNoDelay() throws Exception {
-
-        response = resizer.filterRequest(urls, 500, 500, 0);
-        assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+        String entityClass = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
 
 
     }
 
     @Test
-    public void filterRequestWidthHeightNoDelay() throws Exception {
+    public void filterRequestWidthHeightDelay() throws Exception {
 
-        response = resizer.filterRequest(urls, 500, 500, 0);
+        response = resizer.filterRequest(urls, 500, 500, 1);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+
+        String entityClass = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
 
 
     }
 
     @Test
-    public void filterRequestWidthHeightNoDelay() throws Exception {
+    public void filterRequestNoWidthHeightNoDelay() throws Exception {
 
-        response = resizer.filterRequest(urls, 500, 500, 0);
+        response = resizer.filterRequest(urls, 0, 500, 0);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+
+        String entityClass = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
 
 
     }
 
     @Test
-    public void filterRequestWidthHeightNoDelay() throws Exception {
+    public void filterRequestNoWidthHeightDelay() throws Exception {
 
-        response = resizer.filterRequest(urls, 500, 500, 0);
+        response = resizer.filterRequest(urls, 0, 500, 1);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+
+        String entityClass = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
 
 
     }
 
     @Test
-    public void filterRequestWidthHeightNoDelay() throws Exception {
+    public void filterRequestWidthNoHeightNoDelay() throws Exception {
 
-        response = resizer.filterRequest(urls, 500, 500, 0);
+        response = resizer.filterRequest(urls, 500, 0, 0);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+
+        String entityClass = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
 
 
     }
 
     @Test
-    public void filterRequestWidthHeightNoDelay() throws Exception {
+    public void filterRequestWidthNoHeightDelay() throws Exception {
 
-        response = resizer.filterRequest(urls, 500, 500, 0);
+        response = resizer.filterRequest(urls, 500, 0, 1);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+
+        String entityClass = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
+
+
+    }
+
+    @Test
+    public void filterRequestNoWidthNoHeightNoDelay() throws Exception {
+
+        response = resizer.filterRequest(urls, 0, 0, 0);
+        assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+
+        String entityClass = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
+
+
+    }
+
+    @Test
+    public void filterRequestNoWidthNoHeightDelay() throws Exception {
+
+        response = resizer.filterRequest(urls, 0, 0, 1);
+        assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+
+        String entityClass = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
+
+
+    }
+
+    @Test
+    public void sendBackOriginalImageValidInput() throws Exception {
+
+        response = resizer.sendBackOriginalImage(urls, 0);
+
+        assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+
+    }
+
+    @Test
+    public void sendBackOriginalImageInvalidInput() throws Exception {
+
+        urls.add(new URL("https://stackoverflow.com/"));
+
+        response = resizer.sendBackOriginalImage(urls, 0);
+        assertTrue("Should be false", resizer.processedImage.getSuccess() == false);
 
 
     }

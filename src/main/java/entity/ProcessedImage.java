@@ -3,6 +3,7 @@ package entity;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 /**
  * Created by bmodahl on 3/21/17.
@@ -15,6 +16,8 @@ public class ProcessedImage {
     Boolean success;
     String  message;
     String  subType;
+    List<BufferedImage> imagesReceived;
+    List<BufferedImage> resizedImages;
 
     public ProcessedImage() {};
 
@@ -31,5 +34,20 @@ public class ProcessedImage {
 
     public void setSubType(String subType) { this.subType = subType; }
 
+    public List<BufferedImage> getImagesReceived() {
+        return imagesReceived;
+    }
+
+    public void setImagesReceived(List<BufferedImage> imagesReceived) {
+        this.imagesReceived = imagesReceived;
+    }
+
+    public List<BufferedImage> getResizedImages() {
+        return resizedImages;
+    }
+
+    public void setResizedImages(List<BufferedImage> resizedImages) {
+        this.resizedImages = resizedImages;
+    }
 
 }
