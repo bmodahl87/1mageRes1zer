@@ -146,7 +146,6 @@ public class ImageResize {
             processedImage.setSuccess(false);
             return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
         }
-
     }
 
     /**
@@ -175,9 +174,7 @@ public class ImageResize {
         } else {
 
             return Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
-
         }
-
     }
 
     /**
@@ -327,7 +324,6 @@ public class ImageResize {
             log.info("Single Image: Write image data");
             BufferedImage image = resizedImages.get(0);
             ImageIO.write(image, processedImage.getSubType(), imageData = new ByteArrayOutputStream());
-
         }
         return imageData;
     }
@@ -362,7 +358,6 @@ public class ImageResize {
 
             }
 
-
         } else if (height == 0){
             for (BufferedImage image : images) {
                 BufferedImage thumbnail = Thumbnails.of(image)
@@ -374,7 +369,6 @@ public class ImageResize {
                 log.info(image.getWidth());
 
             }
-
 
         } else {
 
@@ -390,13 +384,11 @@ public class ImageResize {
 
             }
 
-
         }
 
         processedImage.setResizedImages(resizedImages);
 
         return resizedImages;
-
     }
 
 
@@ -417,7 +409,6 @@ public class ImageResize {
         for (URL url : urls) {
             images.add(ImageIO.read(url));
         }
-
         processedImage.setImagesReceived(images);
 
         return images;
