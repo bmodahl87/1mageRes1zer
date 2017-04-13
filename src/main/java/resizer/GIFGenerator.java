@@ -1,10 +1,3 @@
-/**
- * GIFGenerator
- *
- * Class used to generate
- * gifs as a ByteArrayOutputStream
- *
- */
 
 package resizer;
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
@@ -13,6 +6,14 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+
+/**
+ * GIFGenerator
+ *
+ * Class used to generate
+ * gifs as a ByteArrayOutputStream
+ *
+ */
 
 public class GIFGenerator {
 
