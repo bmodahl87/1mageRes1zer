@@ -27,6 +27,15 @@ public class ImageResize {
 
     ProcessedImage processedImage = new ProcessedImage();
 
+    /**
+     *
+     * @param urls
+     * @param width
+     * @param height
+     * @param delay
+     * @return
+     * @throws IOException
+     */
     @Path("/")
     @GET
     public Response filterRequest(@QueryParam("urls") List<URL> urls,
@@ -95,6 +104,13 @@ public class ImageResize {
 
     }
 
+    /**
+     *
+     * @param urls
+     * @param delay
+     * @return
+     * @throws IOException
+     */
     public Response sendBackOriginalImage(List<URL> urls, double delay) throws IOException {
 
         int width = 0;
@@ -121,6 +137,15 @@ public class ImageResize {
 
     }
 
+    /**
+     *
+     * @param urls
+     * @param height
+     * @param width
+     * @param delay
+     * @return
+     * @throws IOException
+     */
     public Response processRequest(List<URL> urls, int height, int width, double delay) throws IOException {
 
         List<BufferedImage> resizedImages;
@@ -141,6 +166,12 @@ public class ImageResize {
 
     }
 
+    /**
+     *
+     * @param urls
+     * @return
+     * @throws IOException
+     */
     public boolean validateInput(List<URL> urls) throws IOException {
 
         if (checkURLS(urls)){
@@ -151,6 +182,12 @@ public class ImageResize {
         return false;
     }
 
+    /**
+     *
+     * @param urls
+     * @return
+     * @throws IOException
+     */
     public boolean checkURLS(List<URL> urls) throws IOException {
 
         UrlValidator urlValidator = new UrlValidator();
@@ -189,6 +226,12 @@ public class ImageResize {
     }
 
 
+    /**
+     *
+     * @param urls
+     * @return
+     * @throws IOException
+     */
     public boolean checkImages(List<URL> urls) throws IOException {
         for(URL url:urls) {
             BufferedImage image = ImageIO.read(url);
@@ -202,6 +245,11 @@ public class ImageResize {
         return true;
     }
 
+    /**
+     *
+     * @param urls
+     * @throws IOException
+     */
     public void setImageType(List<URL> urls) throws IOException {
         if (urls.size() > 1){
             processedImage.setSubType("gif");
@@ -212,6 +260,14 @@ public class ImageResize {
         }
     }
 
+
+    /**
+     *
+     * @param resizedImages
+     * @param delay
+     * @return
+     * @throws IOException
+     */
     public ByteArrayOutputStream createProcessedImage(List<BufferedImage> resizedImages, double delay) throws IOException {
 
         ByteArrayOutputStream imageData;
@@ -235,6 +291,15 @@ public class ImageResize {
 
     }
 
+
+    /**
+     *
+     * @param urls
+     * @param width
+     * @param height
+     * @return
+     * @throws IOException
+     */
     public List<BufferedImage> resizeImages(List<URL> urls, int width, int height) throws IOException {
 
         List<BufferedImage> images = processImages(urls);
@@ -289,6 +354,13 @@ public class ImageResize {
 
     }
 
+
+    /**
+     *
+     * @param urls
+     * @return
+     * @throws IOException
+     */
     public List<BufferedImage> processImages(List<URL> urls) throws IOException {
 
         List<BufferedImage> images = new ArrayList<BufferedImage>();
@@ -303,6 +375,10 @@ public class ImageResize {
     }
 
 
+    /**
+     *
+     * @return
+     */
     public ProcessedImage getProcessedImage() {
 
         return processedImage;
