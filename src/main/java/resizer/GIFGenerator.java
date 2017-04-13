@@ -35,7 +35,7 @@ public class GIFGenerator {
     /**
      * @param delayInSeconds - Number of seconds to delay in between images, default is 0
      * @param images         - List of buffered images to be generated into a gif
-     * @return
+     * @return               - generated gif as a ByteArrayOutputStream
      */
     public ByteArrayOutputStream generate(double delayInSeconds, List<BufferedImage> images) {
 
