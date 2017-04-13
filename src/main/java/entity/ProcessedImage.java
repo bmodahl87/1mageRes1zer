@@ -19,33 +19,83 @@ public class ProcessedImage {
     List<BufferedImage> imagesReceived;
     List<BufferedImage> resizedImages;
 
-    public ProcessedImage() {};
+    /**
+     *
+     */
+    public ProcessedImage() {}
 
 
+    /**
+     *
+     * @return
+     */
     public Boolean getSuccess() { return success; }
 
+    /**
+     *
+     * @param success
+     */
     public void setSuccess(Boolean success) { this.success = success; }
 
+    /**
+     *
+     * @return
+     */
     public String getMessage() { return message; }
 
+
+    /**
+     *
+     * @param message
+     */
     public void setMessage(String message) { this.message = message; }
 
+
+    /**
+     *
+     * @return
+     */
     public String getSubType() { return subType; }
 
+
+    /**
+     *
+     * @param subType
+     */
     public void setSubType(String subType) { this.subType = subType; }
 
+
+    /**
+     *
+     * @return
+     */
     public List<BufferedImage> getImagesReceived() {
         return imagesReceived;
     }
 
+
+    /**
+     *
+     * @param imagesReceived
+     */
     public void setImagesReceived(List<BufferedImage> imagesReceived) {
         this.imagesReceived = imagesReceived;
     }
 
+
+    /**
+     *
+     * @return
+     */
     public List<BufferedImage> getResizedImages() {
         return resizedImages;
     }
 
+
+    /**
+     * 
+     * @param resizedImages
+     */
     public void setResizedImages(List<BufferedImage> resizedImages) {
         this.resizedImages = resizedImages;
     }
