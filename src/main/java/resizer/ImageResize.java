@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 
 //TODO: make api endpoint the userdocs page (index)
-@Path("/resizeImage")
+@Path("/image")
 public class ImageResize {
     private Logger log = Logger.getLogger(this.getClass());
 
@@ -35,12 +35,14 @@ public class ImageResize {
                                          @QueryParam("width") int width,
                                          @QueryParam("height") int height,
                                          @QueryParam("delay") double delay) throws IOException {
+
         Response response = null;
 
         if (urls.isEmpty()) {
 
-            //send error json
-            log.error("SEND JSON ERROR");
+            processedImage.setSuccess(false);
+            processedImage.setMessage("No URL received.");
+            response = Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
 
         } else if (width != 0 && height != 0 && delay == 0){
 
