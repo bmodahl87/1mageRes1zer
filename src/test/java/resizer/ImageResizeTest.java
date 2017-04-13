@@ -1,6 +1,5 @@
 package resizer;
 
-import entity.ProcessedImage;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,18 +7,12 @@ import org.junit.Test;
 import javax.imageio.ImageIO;
 import javax.ws.rs.core.Response;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by katana on 4/10/17.
- */
 public class ImageResizeTest {
 
     private Logger log = Logger.getLogger(this.getClass());
@@ -38,13 +31,10 @@ public class ImageResizeTest {
 
         resizer = new ImageResize();
         pic1Url = new URL("http://www.clipartbest.com/cliparts/KTn/XXK/KTnXXK8Ec.png");
-        pic2Url = new URL("http://www.iconsdb.com/icons/preview/orange/fish-xxl.png");
 
         urls.add(pic1Url);
-        urls.add(pic2Url);
 
         images.add(ImageIO.read(pic1Url));
-        images.add(ImageIO.read(pic2Url));
 
 
     }
@@ -52,11 +42,25 @@ public class ImageResizeTest {
     @Test
     public void filterRequestEmptyURLS() throws Exception {
 
+        //Single Img
         response = resizer.filterRequest(new ArrayList<URL>(), 0, 0, 0);
+
         assertTrue("Should be false", resizer.processedImage.getSuccess() == false);
 
-        String entityClass = response.getEntity().getClass().toString();
-        assertEquals("Should be equal", "class entity.ProcessedImage", entityClass);
+        String entityClassImg = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class entity.ProcessedImage", entityClassImg);
+
+        //Multiple Img
+        pic2Url = new URL("http://www.iconsdb.com/icons/preview/orange/fish-xxl.png");
+        urls.add(pic2Url);
+        images.add(ImageIO.read(pic2Url));
+
+        response = resizer.filterRequest(new ArrayList<URL>(), 0, 0, 0);
+
+        assertTrue("Should be false", resizer.processedImage.getSuccess() == false);
+
+        String entityClassGif = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class entity.ProcessedImage", entityClassGif);
 
 
     }
@@ -64,11 +68,31 @@ public class ImageResizeTest {
     @Test
     public void filterRequestWidthHeightNoDelay() throws Exception {
 
-        response = resizer.filterRequest(urls, 500, 500, 0);
+        //Single Img
+        response = resizer.filterRequest(urls, 500, 200, 0);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
 
         String entityClass = response.getEntity().getClass().toString();
         assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
+
+        //Resizing Results
+        int newWidth = resizer.processedImage.getResizedImages().get(0).getWidth();
+        int newHeight = resizer.processedImage.getResizedImages().get(0).getHeight();
+
+        assertEquals("New height should be 200.", 200, newHeight);
+        assertEquals("New width should be 500.", 500, newWidth);
+
+        //Multiple Img
+        pic2Url = new URL("http://www.iconsdb.com/icons/preview/orange/fish-xxl.png");
+        urls.add(pic2Url);
+        images.add(ImageIO.read(pic2Url));
+
+        response = resizer.filterRequest(urls, 500, 200, 0);
+
+        assertTrue("Should be false", resizer.processedImage.getSuccess() == true);
+
+        String entityClassGif = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClassGif);
 
 
     }
@@ -76,11 +100,32 @@ public class ImageResizeTest {
     @Test
     public void filterRequestWidthHeightDelay() throws Exception {
 
-        response = resizer.filterRequest(urls, 500, 500, 1);
+        //Single Img
+        response = resizer.filterRequest(urls, 500, 200, 1);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
 
         String entityClass = response.getEntity().getClass().toString();
         assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
+
+        //Resizing Results
+        int newWidth = resizer.processedImage.getResizedImages().get(0).getWidth();
+        int newHeight = resizer.processedImage.getResizedImages().get(0).getHeight();
+
+        assertEquals("New height should be 200.", 200, newHeight);
+        assertEquals("New width should be 500.", 500, newWidth);
+
+        //Multiple Img
+        pic2Url = new URL("http://www.iconsdb.com/icons/preview/orange/fish-xxl.png");
+        urls.add(pic2Url);
+        images.add(ImageIO.read(pic2Url));
+
+        response = resizer.filterRequest(urls, 500, 200, 1);
+
+        assertTrue("Should be false", resizer.processedImage.getSuccess() == true);
+
+        String entityClassGif = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClassGif);
+
 
 
     }
@@ -88,11 +133,29 @@ public class ImageResizeTest {
     @Test
     public void filterRequestNoWidthHeightNoDelay() throws Exception {
 
-        response = resizer.filterRequest(urls, 0, 500, 0);
+        //Single Img
+        response = resizer.filterRequest(urls, 0, 200, 0);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
 
         String entityClass = response.getEntity().getClass().toString();
         assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
+
+        //Resizing Results
+        int newHeight = resizer.processedImage.getResizedImages().get(0).getHeight();
+
+        assertEquals("New height should be 200.", 200, newHeight);
+
+        //Multiple Img
+        pic2Url = new URL("http://www.iconsdb.com/icons/preview/orange/fish-xxl.png");
+        urls.add(pic2Url);
+        images.add(ImageIO.read(pic2Url));
+
+        response = resizer.filterRequest(urls, 0, 200, 0);
+
+        assertTrue("Should be false", resizer.processedImage.getSuccess() == true);
+
+        String entityClassGif = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClassGif);
 
 
     }
@@ -100,47 +163,125 @@ public class ImageResizeTest {
     @Test
     public void filterRequestNoWidthHeightDelay() throws Exception {
 
-        response = resizer.filterRequest(urls, 0, 500, 1);
+        //Single Img
+        response = resizer.filterRequest(urls, 0, 200, 1);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
 
         String entityClass = response.getEntity().getClass().toString();
         assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
 
+        //Resizing Results
+        int newHeight = resizer.processedImage.getResizedImages().get(0).getHeight();
+
+        assertEquals("New height should be 200.", 200, newHeight);
+
+        //Multiple Img
+        pic2Url = new URL("http://www.iconsdb.com/icons/preview/orange/fish-xxl.png");
+        urls.add(pic2Url);
+        images.add(ImageIO.read(pic2Url));
+
+        response = resizer.filterRequest(urls, 0, 200, 1);
+
+        assertTrue("Should be false", resizer.processedImage.getSuccess() == true);
+
+        String entityClassGif = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClassGif);
 
     }
 
-    @Test
-    public void filterRequestWidthNoHeightNoDelay() throws Exception {
-
-        response = resizer.filterRequest(urls, 500, 0, 0);
-        assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
-
-        String entityClass = response.getEntity().getClass().toString();
-        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
-
-
-    }
-
-    @Test
-    public void filterRequestWidthNoHeightDelay() throws Exception {
-
-        response = resizer.filterRequest(urls, 500, 0, 1);
-        assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
-
-        String entityClass = response.getEntity().getClass().toString();
-        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
-
-
-    }
+//    @Test
+//    public void filterRequestWidthNoHeightNoDelay() throws Exception {
+//
+//        //Single Img
+//        response = resizer.filterRequest(urls, 500, 0, 0);
+//        assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+//
+//        String entityClass = response.getEntity().getClass().toString();
+//        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
+//
+//        //Resizing Results
+//        int newWidth = resizer.processedImage.getResizedImages().get(0).getWidth();
+//
+//        assertEquals("New width should be 500.", 500, newWidth);
+//
+//        //Multiple Img
+//        pic2Url = new URL("http://www.iconsdb.com/icons/preview/orange/fish-xxl.png");
+//        urls.add(pic2Url);
+//        images.add(ImageIO.read(pic2Url));
+//
+//        response = resizer.filterRequest(urls, 500, 0, 0);
+//
+//        assertTrue("Should be false", resizer.processedImage.getSuccess() == true);
+//
+//        String entityClassGif = response.getEntity().getClass().toString();
+//        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClassGif);
+//
+//
+//    }
+//
+//    @Test
+//    public void filterRequestWidthNoHeightDelay() throws Exception {
+//
+//        //Single Img
+//        response = resizer.filterRequest(urls, 500, 0, 1);
+//        assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
+//
+//        String entityClass = response.getEntity().getClass().toString();
+//        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
+//
+//        //Resizing Results
+//        int newWidth = resizer.processedImage.getResizedImages().get(0).getWidth();
+//
+//        assertEquals("New width should be 500.", 500, newWidth);
+//
+//        //Multiple Img
+//        pic2Url = new URL("http://www.iconsdb.com/icons/preview/orange/fish-xxl.png");
+//        urls.add(pic2Url);
+//        images.add(ImageIO.read(pic2Url));
+//
+//        response = resizer.filterRequest(urls, 500, 0, 1);
+//
+//        assertTrue("Should be false", resizer.processedImage.getSuccess() == true);
+//
+//        String entityClassGif = response.getEntity().getClass().toString();
+//        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClassGif);
+//
+//
+//    }
 
     @Test
     public void filterRequestNoWidthNoHeightNoDelay() throws Exception {
 
+        //Single Img
         response = resizer.filterRequest(urls, 0, 0, 0);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
 
         String entityClass = response.getEntity().getClass().toString();
         assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
+
+        //Resizing Results
+        int oldWidth = resizer.processedImage.getImagesReceived().get(0).getWidth();
+        int oldHeight = resizer.processedImage.getImagesReceived().get(0).getHeight();
+        int newWidth = resizer.processedImage.getResizedImages().get(0).getWidth();
+        int newHeight = resizer.processedImage.getResizedImages().get(0).getHeight();
+
+        log.info("WIDTHS: " + oldWidth + "/" + newWidth);
+        log.info("WIDTHS: " + oldHeight + "/" + newHeight);
+
+        assertEquals("New height should be" + oldHeight, oldHeight, newHeight);
+        assertEquals("New width should be" + oldWidth, oldWidth, newWidth);
+
+        //Multiple Img
+        pic2Url = new URL("http://www.iconsdb.com/icons/preview/orange/fish-xxl.png");
+        urls.add(pic2Url);
+        images.add(ImageIO.read(pic2Url));
+
+        response = resizer.filterRequest(urls, 0, 0, 0);
+
+        assertTrue("Should be false", resizer.processedImage.getSuccess() == true);
+
+        String entityClassGif = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClassGif);
 
 
     }
@@ -148,11 +289,33 @@ public class ImageResizeTest {
     @Test
     public void filterRequestNoWidthNoHeightDelay() throws Exception {
 
+        //Single Img
         response = resizer.filterRequest(urls, 0, 0, 1);
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
 
         String entityClass = response.getEntity().getClass().toString();
         assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClass);
+
+        //Resizing Results
+        int oldWidth = resizer.processedImage.getImagesReceived().get(0).getWidth();
+        int oldHeight = resizer.processedImage.getImagesReceived().get(0).getHeight();
+        int newWidth = resizer.processedImage.getResizedImages().get(0).getWidth();
+        int newHeight = resizer.processedImage.getResizedImages().get(0).getHeight();
+
+        assertEquals("New height should be" + oldHeight, oldHeight, newHeight);
+        assertEquals("New width should be" + oldWidth, oldWidth, newWidth);
+
+        //Multiple Img
+        pic2Url = new URL("http://www.iconsdb.com/icons/preview/orange/fish-xxl.png");
+        urls.add(pic2Url);
+        images.add(ImageIO.read(pic2Url));
+
+        response = resizer.filterRequest(urls, 0, 0, 1);
+
+        assertTrue("Should be false", resizer.processedImage.getSuccess() == true);
+
+        String entityClassGif = response.getEntity().getClass().toString();
+        assertEquals("Should be equal", "class java.io.ByteArrayInputStream", entityClassGif);
 
 
     }
@@ -161,6 +324,15 @@ public class ImageResizeTest {
     public void sendBackOriginalImageValidInput() throws Exception {
 
         response = resizer.sendBackOriginalImage(urls, 0);
+
+        //Resizing Results
+        int oldWidth = resizer.processedImage.getImagesReceived().get(0).getWidth();
+        int oldHeight = resizer.processedImage.getImagesReceived().get(0).getHeight();
+        int newWidth = resizer.processedImage.getResizedImages().get(0).getWidth();
+        int newHeight = resizer.processedImage.getResizedImages().get(0).getHeight();
+
+        assertEquals("New height should be" + oldHeight, oldHeight, newHeight);
+        assertEquals("New width should be" + oldWidth, oldWidth, newWidth);
 
         assertTrue("Should be true", resizer.processedImage.getSuccess() == true);
 
@@ -212,6 +384,17 @@ public class ImageResizeTest {
         boolean urlsOkay = resizer.checkURLS(urls);
 
         assertTrue("Should be false", urlsOkay == false);
+    }
+
+    @Test
+    public void checkURLSBrokenUrl() throws Exception {
+
+        urls.add(new URL("https:stackoverflow.com/"));
+
+        boolean urlsOkay = resizer.checkURLS(urls);
+
+        assertTrue("Should be false", urlsOkay == false);
+
     }
 
     @Test

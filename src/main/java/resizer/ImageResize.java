@@ -130,7 +130,6 @@ public class ImageResize {
             resizedImages = resizeImages(urls, width, height);
             byte[] imageData = createProcessedImage(resizedImages, delay).toByteArray();
 
-            log.info(processedImage.getSubType());
             return Response.ok(new ByteArrayInputStream(imageData), new MediaType("image", processedImage.getSubType())).build();
 
         } else {
@@ -240,6 +239,12 @@ public class ImageResize {
         List<BufferedImage> images = processImages(urls);
         List<BufferedImage> resizedImages = new ArrayList<BufferedImage>();
 
+
+        /**
+         *
+         * TODO: BUG!!! If trying to resize larger than original image with only width or only height, image does not resize.
+         *
+         */
         if (width == 0) {
             for (BufferedImage image : images) {
                 BufferedImage thumbnail = Thumbnails.of(image)
@@ -248,7 +253,6 @@ public class ImageResize {
                         .outputFormat(processedImage.getSubType())
                         .asBufferedImage();
                 resizedImages.add(thumbnail);
-                log.info(image.getHeight());
 
             }
 
@@ -261,7 +265,6 @@ public class ImageResize {
                         .outputFormat(processedImage.getSubType())
                         .asBufferedImage();
                 resizedImages.add(thumbnail);
-                log.info(image.getWidth());
 
             }
 
@@ -275,8 +278,6 @@ public class ImageResize {
                         .outputFormat(processedImage.getSubType())
                         .asBufferedImage();
                 resizedImages.add(thumbnail);
-                log.info(image.getWidth());
-                log.info(image.getHeight());
 
             }
 
