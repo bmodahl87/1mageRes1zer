@@ -1,0 +1,44 @@
+body {
+    text-align: center;
+    background: #eeeeee;
+}
+
+section {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+article {
+    width: 1200px;
+    margin: 0 auto;
+    text-align: left;
+    background: #ffffff;
+    padding: .5em;
+    padding-left: 1.5em;
+    margin-bottom: 10px;
+    border-radius: 25px;
+}
+
+li {
+    list-style: none;
+}
+
+header ul {
+    text-align: left;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+ul {
+    background: #ffffff;
+    padding: .5em;
+    padding-left: 1.5em;
+    border-radius: 25px;
+    width: 300px;
+}
+
+h1 {
+    font-size: 34px;
+}
