@@ -31,9 +31,9 @@ public class ImageResize {
     @Path("/")
     @GET
     public Response filterRequest(@QueryParam("urls") List<URL> urls,
-                                         @QueryParam("width") int width,
-                                         @QueryParam("height") int height,
-                                         @QueryParam("delay") double delay) throws IOException {
+                                  @QueryParam("width") int width,
+                                  @QueryParam("height") int height,
+                                  @QueryParam("delay") double delay) throws IOException {
 
         Response response = null;
 
@@ -45,38 +45,49 @@ public class ImageResize {
 
         } else if (width != 0 && height != 0 && delay == 0){
 
+            processedImage.setSuccess(true);
             response = processRequest(urls, height, width, 0);
 
         } else if (width != 0 && height != 0 && delay != 0) {
 
+            processedImage.setSuccess(true);
             response = processRequest(urls, height, width, delay);
 
         } else if (width == 0 && height != 0 && delay == 0) {
 
+            processedImage.setSuccess(true);
             response = processRequest(urls, height, 0, 0);
 
         } else if (width == 0 && height != 0 && delay != 0) {
 
+            processedImage.setSuccess(true);
             response = processRequest(urls, height, 0, delay);
 
         } else if (width != 0 && height == 0 && delay == 0) {
 
+            processedImage.setSuccess(true);
             response = processRequest(urls, 0, width, 0);
 
         } else if (width != 0 && height == 0 && delay != 0) {
 
+            processedImage.setSuccess(true);
             response = processRequest(urls, 0, width, delay);
 
         } else if (width == 0 && height == 0 && delay == 0) {
 
+            processedImage.setSuccess(true);
             response = resizeImageUrlsOnly(urls, 0);
 
         } else if (width == 0 && height == 0 && delay != 0) {
 
+            processedImage.setSuccess(true);
             response = resizeImageUrlsOnly(urls, delay);
 
         } else {
 
+            processedImage.setSuccess(false);
+            processedImage.setMessage("Unable to process request, reason unknown.");
+            response = Response.ok(processedImage, MediaType.APPLICATION_JSON).build();
             log.debug("Unable to filter request within filterRequest()");
 
         }
@@ -127,8 +138,6 @@ public class ImageResize {
         }
 
     }
-
-
 
     public boolean validateInput(List<URL> urls) throws IOException {
 
